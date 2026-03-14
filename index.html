@@ -29,15 +29,14 @@
   body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: var(--light); overflow-x: hidden; }
 
   /* ===================== LANDING ===================== */
- #landing{
+ #landing {
   position: relative;
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 6vh;
+  display: flex;          /* ← 必須 */
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .landing-photo {
@@ -51,14 +50,23 @@
 }
 
 .landing-content {
-  position: relative;
-  z-index: 2;
-  max-width: 900px;
+  position: relative;   /* ← 追加 */
+  z-index: 2;           /* ← 追加（背景画像の上に来るように） */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 8vh 5% 12vh;
+  margin-top: 0;
   text-align: center;
-  padding: 0 5%;
-  animation: fadeSlideIn 1.4s ease-out forwards;
-  margin-top:0px;
-  transform: translateY(-40px);
+}
+
+.landing-top {
+  /* 上エリア：何もしなくてもOK、自然に上に来る */
+}
+
+.landing-bottom {
+  /* 下エリア：自然に下に来る */
 }
 
 .landing-en {
@@ -601,45 +609,37 @@
 
   <div class="landing-content">
 
-    <div class="landing-en">
-      FURUSATO ONGAKUKAI · YAMAGUCHI
-    </div>
-
+  <!-- 上グループ：顔の上（暗い天井エリア） -->
+  <div class="landing-top">
+    <div class="landing-en">FURUSATO ONGAKUKAI · YAMAGUCHI</div>
     <h1 class="landing-title">
-
-      <svg viewBox="0 0 800 200" class="title-arch">
-      
-      <defs>
-        <path id="titleCurve"
-        d="M100,150 Q400,40 700,150" />
-      </defs>
-      
-      <text text-anchor="middle">
-      <textPath href="#titleCurve" startOffset="50%">
-      ふるさと音楽会
-      </textPath>
-      </text>
-      
-      </svg>
-      
+      <h1 class="landing-title">
+        <svg viewBox="0 0 800 200" class="title-arch">
+          <defs>
+            <path id="titleCurve" d="M100,150 Q400,40 700,150" />
+          </defs>
+          <text text-anchor="middle">
+            <textPath href="#titleCurve" startOffset="50%">
+              ふるさと音楽会
+            </textPath>
+          </text>
+        </svg>
     </h1>
-
-    <div class="landing-sub">
-      山口県出身アーティストによる音楽会
-    </div>
-
-    <div class="landing-tagline">
-      室内楽 ・ 吹奏楽 ・ ジャズ<br>
-      山口の音楽文化を次世代へ
-    </div>
-
-    <div class="landing-cta">
-      <a href="#concerts" class="landing-button">
-        次回公演を見る
-      </a>
-    </div>
-
+    </h1>
+    <div class="landing-sub">山口県出身アーティストによる音楽会</div>
   </div>
+
+  <!-- 下グループ：顔の下（ステージ下エリア） -->
+  <div class="landing-bottom">
+    <div class="landing-tagline">
+      室内楽 ・ 吹奏楽 ・ ジャズ<br>山口の音楽文化を次世代へ
+    </div>
+    <div class="landing-cta">
+      <a href="#concerts" class="landing-button">次回公演を見る</a>
+    </div>
+  </div>
+
+</div>
 
   <div class="scroll-hint"
     onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'})">
