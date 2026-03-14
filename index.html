@@ -582,7 +582,9 @@
     .title-arch text{
       font-size:38px;
     }
-
+    .parallax{
+    background-attachment:scroll;
+    }
   }
 
 
@@ -675,17 +677,11 @@ margin:auto;
 
 }
 
-.video-grid iframe{
-
-width:100%;
-
-aspect-ratio:16/9;
-
-border:none;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-
+.video-grid blockquote{
+margin:0 auto !important;
+max-width:520px !important;
 }
+  
 </style>
 </head>
 <body>
@@ -803,16 +799,6 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
     </div>
   </div>
 
-  <!-- GSS管理の説明 -->
-  <div class="section section-alt" style="padding-top:3rem;padding-bottom:3rem;">
-    <div class="gss-notice">
-      <strong>📋 コンテンツ管理について（Googleスプレッドシート連携）</strong><br>
-      このウェブサイトのコンテンツ（公演情報・メンバー・画像URLなど）は、Googleスプレッドシートで管理できます。<br>
-      スプレッドシートのシートID（<code>SPREADSHEET_ID</code>）を設定することで、更新が自動反映されます。<br>
-      設定方法は下部の「<strong>GSS設定パネル</strong>」をご参照ください。
-    </div>
-  </div>
-</section>
 
 <!-- ============ ABOUT ============ -->
 <section id="about" class="section section-alt">
@@ -918,7 +904,7 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 
 <div class="video-grid" id="videoGrid"></div>
 
-<script async src="https://www.instagram.com/embed.js"></script>
+
 
 </section>
 
@@ -979,16 +965,7 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
   <div class="footer-copy">© 2025 ふるさと音楽会 All Rights Reserved.</div>
 </footer>
 
-<!-- ============ GSS PANEL ============ -->
 
-  <div style="font-weight:500;margin-bottom:0.5rem;color:var(--accent2)">📊 GSS設定パネル</div>
-  <div style="line-height:1.7;color:rgba(255,255,255,0.8)">
-    スプレッドシートIDを入力すると<br>コンテンツが自動更新されます。<br>
-    <input id="gssInput" placeholder="スプレッドシートID" style="width:100%;margin-top:0.5rem;padding:0.3rem 0.5rem;font-size:0.75rem;background:rgba(255,255,255,0.1);border:1px solid rgba(200,136,58,0.4);color:white;outline:none;">
-    <button onclick="loadGSS()" style="width:100%;margin-top:0.4rem;padding:0.3rem;background:var(--accent);border:none;color:white;cursor:pointer;font-size:0.72rem;">読み込む</button>
-  </div>
-  <button onclick="document.getElementById('gssPanel').style.display='none'" style="position:absolute;top:0.4rem;right:0.6rem;background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:1rem;">×</button>
-</div>
 
 
 <script>
@@ -1121,8 +1098,19 @@ const CMS_URL = "https://script.google.com/macros/s/AKfycbxLP3JZpcW7ON7ay5QO2tzo
 
 async function loadCMS(){
 
+let data;
+
+try{
+
 const res = await fetch(CMS_URL);
-const data = await res.json();
+data = await res.json();
+
+}catch(e){
+
+console.error("CMS load error", e);
+return;
+
+}
 
 //
 // MEMBERS
@@ -1148,24 +1136,11 @@ if(data.concerts.length){
 
 const c = data.concerts[0];
 
-document.getElementById("nextConcertSlide").innerHTML = `
-<div class="carousel-image"
-style="background-image:url('${c[4]}');
-background-size:cover;
-background-position:center;">
-</div>
-<div class="carousel-body">
-<div class="carousel-tag">Next Concert</div>
-<div class="carousel-title">${c[0]}</div>
-<div class="carousel-desc">
-${c[1]}<br>
-${c[2]}<br>
-開演 ${c[3]}
-</div>
-<a href="#concerts" class="carousel-more">詳細を見る →</a>
-</div>
-`;
-
+document.querySelector("#nextConcertSlide .carousel-title").innerHTML = c[0];
+document.querySelector("#nextConcertSlide .carousel-desc").innerHTML =
+`${c[1]}<br>${c[2]}<br>開演 ${c[3]}`;
+document.querySelector("#nextConcertSlide .carousel-image").style.backgroundImage =
+`linear-gradient(to right, rgba(15,30,20,0.3), rgba(15,30,20,0.7)), url('${c[4]}')`;
 document.getElementById("concertTitle").innerText = c[0];
 
 document.getElementById("concertInfo").innerHTML = `
@@ -1175,20 +1150,7 @@ document.getElementById("concertInfo").innerHTML = `
 `;
 
 }
-//
-// VIDEOS
-//
-const html = data.videos.map(v=>`
-<blockquote class="instagram-media"
-data-instgrm-permalink="${v[1]}"
-data-instgrm-version="14"></blockquote>
-`).join("");
 
-document.querySelector(".video-grid").innerHTML = html;
-
-if(window.instgrm){
-window.instgrm.Embeds.process();
-}
 //
 // INSTAGRAM VIDEOS
 //
@@ -1202,12 +1164,15 @@ style="width:100%;">
 
 document.getElementById("videoGrid").innerHTML = html;
 
-// Instagram script refresh
-if(window.instgrm){
-window.instgrm.Embeds.process();
+setTimeout(()=>{
+  if(window.instgrm){
+  window.instgrm.Embeds.process();
+  }
+},
+300);
 }
+window.addEventListener("DOMContentLoaded", loadCMS);
 
-loadCMS();
 </script>
 <script async src="https://www.instagram.com/embed.js"></script>
 </body>
