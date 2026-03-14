@@ -29,15 +29,15 @@
   body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: var(--light); overflow-x: hidden; }
 
   /* ===================== LANDING ===================== */
-  #landing {
+ #landing{
   position: relative;
   height: 100vh;
   width: 100%;
   overflow: hidden;
   display: flex;
+  align-items: flex-start;
   justify-content: center;
-  align-items:flex-start;
-  padding-top:22vh;
+  padding-top: 18vh;
 }
 
 .landing-photo {
@@ -58,14 +58,17 @@
   padding: 0 5%;
   animation: fadeSlideIn 1.4s ease-out forwards;
   margin-top:80px;
+  transform: translateY(-40px);
 }
 
 .landing-en {
   font-size: 0.8rem;
   letter-spacing: 0.35em;
   color: var(--accent2);
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  transform: translateY(-10px);
 }
+
 
 .landing-title {
   font-family: 'Noto Serif JP', serif;
