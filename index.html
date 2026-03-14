@@ -605,6 +605,87 @@
   letter-spacing:0.35em;
   transform:translateY(-8px);
 }
+
+.landing-video{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-1;
+filter:brightness(0.55);
+}
+
+.parallax{
+
+height:420px;
+
+background-image:url("images/orchestra.jpg");
+
+background-attachment:fixed;
+
+background-size:cover;
+
+background-position:center;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+text-align:center;
+
+color:white;
+
+}
+
+.parallax-inner{
+
+background:rgba(0,0,0,0.45);
+
+padding:40px 60px;
+
+}
+
+.parallax h2{
+
+font-family:'Noto Serif JP';
+
+font-size:36px;
+
+letter-spacing:0.08em;
+
+margin-bottom:10px;
+
+}
+
+.video-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+gap:30px;
+
+max-width:1000px;
+
+margin:auto;
+
+}
+
+.video-grid iframe{
+
+width:100%;
+
+aspect-ratio:16/9;
+
+border:none;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+
+}
 </style>
 </head>
 <body>
@@ -612,7 +693,13 @@
 <!-- ============ LANDING ============ -->
 <section id="landing">
 
-  <div class="landing-photo"></div>
+  <div class="landing-photo">
+
+<video autoplay muted loop playsinline class="landing-video">
+<source src="video/hero.mp4" type="video/mp4">
+</video>
+
+</div>
 
   <div class="landing-content">
 
@@ -681,7 +768,7 @@
   <div class="hero-carousel" id="heroCarousel">
 
     <!-- Slide A: 次の公演 -->
-    <div class="carousel-slide active">
+    <div class="carousel-slide active" id="nextConcertSlide">
       <div class="carousel-image" style="background-image:linear-gradient(to right, rgba(15,30,20,0.3), rgba(15,30,20,0.7)), url('IMG_1408.JPG'); background-size:cover; background-position:center;"></div>
       <div class="carousel-body">
         <div class="carousel-tag">Next Concert</div>
@@ -769,6 +856,22 @@
   </div>
 </section>
 
+
+
+<section class="parallax">
+
+<div class="parallax-inner">
+
+<h2>Music connects hometown and future</h2>
+
+<p>
+山口の音楽文化を次世代へ
+</p>
+
+</div>
+
+</section>
+  
 <!-- ============ CONCERTS ============ -->
 <section id="concerts" class="section">
   <div class="section-label">Concerts</div>
@@ -802,6 +905,26 @@
     <h3 style="font-family:'Noto Serif JP',serif; font-size:1.1rem; font-weight:400; letter-spacing:0.1em; margin-bottom:1.5rem; color:var(--primary);">過去の主な公演実績</h3>
     <div id="concertHistory" style="display:grid;gap:0.6rem;"></div>
   </div>
+</section>
+
+<section class="section section-alt">
+
+<div class="section-label">Performance</div>
+
+<h2 class="section-title">演奏動画</h2>
+
+<div class="divider"></div>
+
+<div class="video-grid">
+
+<iframe src="https://www.youtube.com/embed/VIDEOID1" allowfullscreen></iframe>
+
+<iframe src="https://www.youtube.com/embed/VIDEOID2" allowfullscreen></iframe>
+
+<iframe src="https://www.youtube.com/embed/VIDEOID3" allowfullscreen></iframe>
+
+</div>
+
 </section>
 
 <!-- ============ MEMBERS ============ -->
@@ -1016,6 +1139,112 @@ document.getElementById('hamburger').addEventListener('click', function() {
     links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:rgba(15,30,20,0.98);padding:1rem 0;';
   }
 });
+
+async function loadConcerts(spreadsheetId){
+
+const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&sheet=concerts`;
+
+const res = await fetch(url);
+const text = await res.text();
+
+const json = JSON.parse(
+text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]
+);
+
+const row = json.table.rows[0].c;
+
+const title = row[0]?.v;
+const date = row[1]?.v;
+const venue = row[2]?.v;
+const open = row[3]?.v;
+const image = row[4]?.v;
+
+const slide = document.getElementById("nextConcertSlide");
+
+slide.innerHTML = `
+<div class="carousel-image" style="background-image:url('${image}')"></div>
+
+<div class="carousel-body">
+<div class="carousel-tag">Next Concert</div>
+
+<div class="carousel-title">${title}</div>
+
+<div class="carousel-desc">
+${date}<br>
+${venue}<br>
+開演 ${open}
+</div>
+
+<a href="#concerts" class="carousel-more">詳細を見る →</a>
+
+</div>
+`;
+
+}
+
+// ページ読み込み時
+const SPREADSHEET_ID = "1qIddfcOGwOh71H4eK8hWhdTTnOTNcedlOKb2aRz6_fc";
+
+loadConcerts(SPREADSHEET_ID);
+
+// ===== UNIVERSAL GSS CMS =====
+async function loadSheet(id, sheet){
+  const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&sheet=${sheet}`;
+  const res = await fetch(url);
+  const txt = await res.text();
+  const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
+  return json.table.rows.map(r => r.c.map(c => c?.v || ""));
+}
+
+// ===== CMS INITIALIZER =====
+async function initCMS(){
+
+const id = document.getElementById("gssInput").value.trim();
+if(!id) return;
+
+const members = await loadSheet(id,"members");
+const concerts = await loadSheet(id,"concerts");
+
+membersData.length = 0;
+members.forEach(r=>{
+membersData.push({
+name:r[0],
+instrument:r[1].toLowerCase(),
+hometown:r[2],
+profile:r[3],
+img:r[4]
+});
+});
+
+renderMembers("all");
+
+if(concerts.length){
+const c = concerts[0];
+document.getElementById("nextConcertSlide").innerHTML = `
+<div class="carousel-image" style="background-image:url('${c[4]}')"></div>
+<div class="carousel-body">
+<div class="carousel-tag">Next Concert</div>
+<div class="carousel-title">${c[0]}</div>
+<div class="carousel-desc">${c[1]}<br>${c[2]}<br>開演 ${c[3]}</div>
+<a href="#concerts" class="carousel-more">詳細を見る →</a>
+</div>`;
+}
+
+}
+
+document.querySelector("#gssPanel button").onclick = initCMS;
+
+async function loadVideos(id){
+
+const rows = await loadSheet(id,"videos");
+
+const html = rows.map(v=>`
+<iframe src="https://www.youtube.com/embed/${v[1]}" allowfullscreen></iframe>
+`).join("");
+
+document.querySelector(".video-grid").innerHTML = html;
+
+}
 </script>
 </body>
 </html>
