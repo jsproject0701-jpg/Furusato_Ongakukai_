@@ -571,14 +571,18 @@
 
   .title-arch{
     width:100%;
-    max-width:720px;
+    max-width:760px;
+    transform:translateY(-40px);
   }
 
   .title-arch text{
     fill:white;
     font-family:'Noto Serif JP', serif;
-    font-size:64px;
+    font-size:86px;
     letter-spacing:0.08em;
+    text-shadow:
+      0 0 10px rgba(255,255,255,0.2),
+      0 0 30px rgba(232,168,74,0.15);
   }
 </style>
 </head>
@@ -601,7 +605,7 @@
       
       <defs>
         <path id="titleCurve"
-        d="M100,150 Q400,-20 700,150" />
+        d="M80,170 Q400,-120 720,170" />
       </defs>
       
       <text text-anchor="middle">
