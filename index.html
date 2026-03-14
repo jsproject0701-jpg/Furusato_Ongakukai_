@@ -30,81 +30,102 @@
 
   /* ===================== LANDING ===================== */
   #landing {
-    position: relative; height: 100vh; width: 100%; overflow: hidden;
-    display: flex; align-items: center; justify-content: flex-end;
-  }
-  .landing-bg {
-  background: none;
-  }
-  .landing-bg::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><circle cx="30" cy="30" r="1" fill="%23ffffff08"/></svg>') repeat;
-    animation: bgFloat 20s linear infinite;
-  }
-  
-  .landing-photo {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-photo {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
     url('images/lp-photo.avif');
   background-size: cover;
   background-position: center;
-  }
-  @keyframes bgFloat { from { transform: translateY(0); } to { transform: translateY(-60px); } }
+}
 
-  .landing-content {
-    position: relative; z-index: 2;
-    padding: 0 8% 0 0;
-    text-align: right;
-    animation: fadeSlideIn 1.4s ease-out forwards;
-  }
+.landing-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  text-align: center;
+  padding: 0 5%;
+  animation: fadeSlideIn 1.4s ease-out forwards;
+}
+
+.landing-en {
+  font-size: 0.8rem;
+  letter-spacing: 0.35em;
+  color: var(--accent2);
+  margin-bottom: 1rem;
+}
+
+.landing-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(3.2rem,7vw,6rem);
+  color: white;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+}
+
+.landing-sub {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.3rem,2.4vw,1.8rem);
+  color: var(--accent2);
+  letter-spacing: 0.12em;
+  margin-top: 0.8rem;
+}
+
+.landing-tagline {
+  margin-top: 1.6rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.15em;
+}
+
+.landing-cta {
+  margin-top: 2.5rem;
+}
+
+.landing-button{
+  display:inline-block;
+  padding:0.9rem 2.4rem;
+  border:1px solid var(--accent2);
+  color:var(--accent2);
+  text-decoration:none;
+  font-size:0.82rem;
+  letter-spacing:0.25em;
+  transition:all .35s;
+}
+
+.landing-button:hover{
+  background:var(--accent2);
+  color:var(--primary);
+  transform:translateY(-2px);
+}
   @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateX(40px); }
-    to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity:0;
+    transform:translateY(30px);
   }
-  .landing-en {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(0.8rem, 1.2vw, 1rem);
-    font-weight: 300; letter-spacing: 0.3em;
-    color: var(--accent2); text-transform: uppercase;
-    margin-bottom: 1.2rem;
+  to {
+    opacity:1;
+    transform:translateY(0);
   }
-  .landing-title {
-    font-family: 'Noto Serif JP', serif;
-    font-size: clamp(3rem, 7vw, 6.5rem);
-    font-weight: 300; line-height: 1.3;
-    color: var(--white);
-    letter-spacing: 0.08em;
-  }
-  .landing-title span {
-    display: block; color: var(--accent2);
-    font-size: clamp(1.8rem, 3.5vw, 3.2rem);
-    font-weight: 300; letter-spacing: 0.15em;
-    margin-top: 0.3em;
-  }
-  .landing-tagline {
-    font-family: 'Noto Serif JP', serif;
-    font-size: clamp(0.75rem, 1vw, 0.9rem);
-    font-weight: 300; letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.65);
-    margin-top: 1.5rem; line-height: 2;
-  }
-  .landing-logo {
-    margin: 2rem 0 2rem auto;
-    width: clamp(80px, 12vw, 130px);
-    height: clamp(80px, 12vw, 130px);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .landing-logo img {
-    width: 100%; height: 100%; object-fit: contain;
-    filter: drop-shadow(0 4px 20px rgba(200,136,58,0.4));
-  }
+}
   .scroll-hint {
     position: absolute; bottom: 2.5rem; left: 50%;
     transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    display: flex; flex-direction: column; 
+    align-items:flex-start;
+    padding-top:18vh;
+    gap: 8px;
     color: rgba(255,255,255,0.5);
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.75rem; letter-spacing: 0.2em;
@@ -124,7 +145,7 @@
   #main-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     height: var(--nav-h);
-    background: rgba(15,30,20,0.92);
+    background:transparent;
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(200,136,58,0.2);
     display: flex; align-items: center;
@@ -545,27 +566,41 @@
 
 <!-- ============ LANDING ============ -->
 <section id="landing">
-  <div class="landing-bg">
-    <div class="landing-orchestra"></div>
-    <div class="landing-photo"></div>
-  </div>
+
+  <div class="landing-photo"></div>
+
   <div class="landing-content">
-    <div class="landing-logo">
-      <img src="images/logo.png" alt="ふるさと音楽会ロゴ">
+
+    <div class="landing-en">
+      FURUSATO ONGAKUKAI · YAMAGUCHI
     </div>
-    <div class="landing-en">Furusato Ongakukai · Yamaguchi</div>
+
     <h1 class="landing-title">
-      ふるさと<br>音楽会
-      <span>山口県出身アーティストによる音楽会</span>
+      ふるさと音楽会
     </h1>
-    <p class="landing-tagline">
+
+    <div class="landing-sub">
+      山口県出身アーティストによる音楽会
+    </div>
+
+    <div class="landing-tagline">
       室内楽 ・ 吹奏楽 ・ ジャズ<br>
-      山口の音楽文化を、次世代へ。
-    </p>
+      山口の音楽文化を次世代へ
+    </div>
+
+    <div class="landing-cta">
+      <a href="#concerts" class="landing-button">
+        次回公演を見る
+      </a>
+    </div>
+
   </div>
-  <div class="scroll-hint" onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'})">
+
+  <div class="scroll-hint"
+    onclick="document.getElementById('home').scrollIntoView({behavior:'smooth'})">
     SCROLL
   </div>
+
 </section>
 
 <!-- ============ NAV ============ -->
@@ -887,7 +922,7 @@ setInterval(() => goSlide((currentSlide + 1) % slides.length), 6000);
 // ============ NAV SHOW ON SCROLL ============
 const nav = document.getElementById('main-nav');
 window.addEventListener('scroll', () => {
-  if(window.scrollY > window.innerHeight * 0.7) {
+  if(window.scrollY > window.innerHeight * 0.4) {
     nav.classList.add('visible');
   } else {
     nav.classList.remove('visible');
