@@ -88,18 +88,18 @@
   color: white;
   font-weight: 300;
   letter-spacing: 0.08em;
-   line-height: 1.0;  /* さらに詰める */
-  margin-bottom: 0.2rem;
+  line-height: 1.0;
+  margin-bottom: 0;  /* 0.2rem → 0 */
 
 }
 
 .landing-sub {
   margin-top: 0.4rem;
   font-family: 'Noto Serif JP', serif;
-  font-size: clamp(0.75rem, 1.2vw, 1rem);  /* かなり小さく */
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
   color: var(--accent2);
   letter-spacing: 0.2em;
-  margin-top: 0.2rem;
+  margin-top: -0.5rem;  /* ← マイナスにして上に引き上げる */
 }
 
 .landing-tagline {
@@ -589,7 +589,7 @@
   .title-arch{
     width:100%;
     max-width:760px;
-    transform:translateY(10px);
+    transform: translateY(0); 
   }
 
   .title-arch text{
