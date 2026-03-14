@@ -34,9 +34,7 @@
     display: flex; align-items: center; justify-content: flex-end;
   }
   .landing-bg {
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, #0f2518 0%, #1e4530 40%, #2d5a3d 70%, #1a3a2a 100%);
-    overflow: hidden;
+  background: none;
   }
   .landing-bg::before {
     content: '';
@@ -50,10 +48,13 @@
                 radial-gradient(ellipse at 70% 40%, rgba(26,58,42,0.8) 0%, transparent 50%);
   }
   .landing-photo {
-    position: absolute; inset: 0;
-    background-image: url('images/lp-photo.avif');
-    background-size: cover; background-position: center top;
-    opacity: 0.35; mix-blend-mode: luminosity;
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url('images/lp-photo.jpg');
+  background-size: cover;
+  background-position: center;
   }
   @keyframes bgFloat { from { transform: translateY(0); } to { transform: translateY(-60px); } }
 
