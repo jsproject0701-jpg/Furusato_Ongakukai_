@@ -56,6 +56,7 @@
   text-align: center;
   padding: 0 5%;
   animation: fadeSlideIn 1.4s ease-out forwards;
+  margin-top:80px;
 }
 
 .landing-en {
@@ -559,6 +560,25 @@
     .landing-content { padding: 0 6%; text-align: center; }
     .landing-logo { margin: 2rem auto; }
     .section { padding: 4rem 5%; }
+    .title-arch text{
+      font-size:38px;
+    }
+    .landing-content{
+      margin-top:40px;
+    }
+  }
+
+
+  .title-arch{
+    width:100%;
+    max-width:720px;
+  }
+
+  .title-arch text{
+    fill:white;
+    font-family:'Noto Serif JP', serif;
+    font-size:64px;
+    letter-spacing:0.08em;
   }
 </style>
 </head>
@@ -576,7 +596,22 @@
     </div>
 
     <h1 class="landing-title">
+
+      <svg viewBox="0 0 800 200" class="title-arch">
+      
+      <defs>
+        <path id="titleCurve"
+        d="M100,150 Q400,-20 700,150" />
+      </defs>
+      
+      <text text-anchor="middle">
+      <textPath href="#titleCurve" startOffset="50%">
       ふるさと音楽会
+      </textPath>
+      </text>
+      
+      </svg>
+      
     </h1>
 
     <div class="landing-sub">
