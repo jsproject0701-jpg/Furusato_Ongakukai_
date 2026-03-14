@@ -56,7 +56,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding: 8vh 5% 18vh;
+  padding: 4vh 5% 20vh;  /* 上を4vh、下を20vhに */
   margin-top: 0;
   text-align: center;
 }
@@ -88,16 +88,18 @@
   color: white;
   font-weight: 300;
   letter-spacing: 0.08em;
-  line-height: 1.2;
+   line-height: 1.0;  /* さらに詰める */
+  margin-bottom: 0.2rem;
+
 }
 
 .landing-sub {
-  font-size: clamp(1rem, 1.8vw, 1.4rem);  /* 少し小さく */
   margin-top: 0.4rem;
   font-family: 'Noto Serif JP', serif;
+  font-size: clamp(0.75rem, 1.2vw, 1rem);  /* かなり小さく */
   color: var(--accent2);
-  letter-spacing: 0.12em;
-  margin-top: 0.3rem;  /* ← タイトルとの間隔を詰める */
+  letter-spacing: 0.2em;
+  margin-top: 0.2rem;
 }
 
 .landing-tagline {
