@@ -1,19 +1,607 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>定期公演 | ふるさと音楽会</title>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>定期公演 | ふるさと音楽会</title>
 
+  <!-- Google Fonts: Noto Serif JP + Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --bg:          #faf8f4;
+      --bg-alt:      #f2ede4;
+      --ink:         #1c1610;
+      --ink-muted:   #5a4f42;
+      --gold:        #b89a5a;
+      --gold-light:  #d4bc82;
+      --gold-pale:   #ede3cc;
+      --line:        rgba(184,154,90,0.30);
+      --radius:      2px;
+      --ff-serif:    'Noto Serif JP', 'YuMincho', serif;
+      --ff-latin:    'Cormorant Garamond', 'Georgia', serif;
+      --transition:  0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff-serif);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+
+    /* ===== Page Header ===== */
+    .page-header {
+      position: relative;
+      padding: 80px 24px 64px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(184,154,90,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* 背景の装飾文字 */
+    .page-header__deco {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--ff-latin);
+      font-size: clamp(80px, 18vw, 200px);
+      font-style: italic;
+      font-weight: 300;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,154,90,0.10);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .page-header__label {
+      font-family: var(--ff-latin);
+      font-size: 11px;
+      letter-spacing: 0.30em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .page-header__title {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 300;
+      letter-spacing: 0.20em;
+      line-height: 1.4;
+      position: relative;
+      color: var(--ink);
+    }
+
+    .page-header__rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 24px auto 0;
+      width: fit-content;
+      position: relative;
+    }
+
+    .page-header__rule::before,
+    .page-header__rule::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .page-header__rule-icon {
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* ===== Section Wrapper ===== */
+    .section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    /* ===== Timeline ===== */
+    .timeline {
+      position: relative;
+      padding-top: 20px;
+    }
+
+    /* 縦線 */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold-light) 5%, var(--gold-light) 95%, transparent);
+    }
+
+    /* ===== Concert Card ===== */
+    .concert {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      align-items: start;
+      gap: 0;
+      margin-bottom: 72px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .concert.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 奇数は右にコンテンツ、偶数は左 */
+    .concert--odd .concert__content  { grid-column: 3; grid-row: 1; }
+    .concert--odd .concert__center   { grid-column: 2; grid-row: 1; }
+    .concert--odd .concert__image    { grid-column: 1; grid-row: 1; justify-self: end; }
+
+    .concert--even .concert__content { grid-column: 1; grid-row: 1; }
+    .concert--even .concert__center  { grid-column: 2; grid-row: 1; }
+    .concert--even .concert__image   { grid-column: 3; grid-row: 1; justify-self: start; }
+
+    /* 中央のノード */
+    .concert__center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 28px;
+    }
+
+    .concert__node {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--gold);
+      background: var(--bg);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(184,154,90,0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .concert:hover .concert__node {
+      transform: scale(1.3);
+      box-shadow: 0 0 0 6px rgba(184,154,90,0.18);
+    }
+
+    /* コンテンツ */
+    .concert__content {
+      padding: 24px 28px;
+      background: white;
+      border: 1px solid rgba(184,154,90,0.18);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 20px rgba(28,22,16,0.04);
+      transition: box-shadow var(--transition), transform var(--transition);
+      max-width: 400px;
+    }
+
+    .concert--odd .concert__content  { margin-left: 4px; }
+    .concert--even .concert__content { margin-right: 4px; }
+
+    .concert:hover .concert__content {
+      box-shadow: 0 6px 32px rgba(28,22,16,0.09);
+      transform: translateY(-2px);
+    }
+
+    .concert__num {
+      font-family: var(--ff-latin);
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .concert__title {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      line-height: 1.5;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .concert__divider {
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+      margin-bottom: 14px;
+    }
+
+    .concert__meta {
+      font-size: 13px;
+      color: var(--ink-muted);
+      letter-spacing: 0.05em;
+      line-height: 1.85;
+    }
+
+    .concert__date {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .concert__date-icon {
+      font-size: 10px;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .concert__venue {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .concert__venue-icon {
+      font-size: 10px;
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    /* 写真 */
+    .concert__image {
+      width: clamp(160px, 22vw, 240px);
+      overflow: hidden;
+      border-radius: var(--radius);
+      box-shadow: 4px 8px 28px rgba(28,22,16,0.10);
+      margin-top: 20px;
+      flex-shrink: 0;
+    }
+
+    .concert--odd .concert__image  { margin-right: 4px; }
+    .concert--even .concert__image { margin-left: 4px; }
+
+    .concert__image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+      aspect-ratio: 3/4;
+    }
+
+    .concert:hover .concert__image img {
+      transform: scale(1.04);
+    }
+
+    /* ===== Top-of-page "最新公演" badge ===== */
+    .latest-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold-pale);
+      border: 1px solid var(--gold-light);
+      border-radius: 2px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: 0.20em;
+      color: var(--gold);
+      font-family: var(--ff-serif);
+      margin-bottom: 6px;
+    }
+
+    /* ===== モバイル対応 ===== */
+    @media (max-width: 680px) {
+      .timeline::before { left: 20px; }
+
+      .concert {
+        display: block;
+        padding-left: 48px;
+        position: relative;
+        margin-bottom: 52px;
+      }
+
+      .concert__center {
+        position: absolute;
+        left: 14px;
+        top: 28px;
+        padding-top: 0;
+      }
+
+      .concert__content {
+        max-width: 100%;
+        margin: 0 !important;
+        padding: 18px 20px;
+      }
+
+      .concert__image {
+        width: 100%;
+        margin: 16px 0 0 !important;
+      }
+
+      .concert__image img {
+        aspect-ratio: 4/3;
+      }
+    }
+
+    /* ===== Footnote / contact ===== */
+    .page-footer-note {
+      text-align: center;
+      padding: 40px 24px 80px;
+      border-top: 1px solid var(--line);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .page-footer-note a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    .page-footer-note a:hover {
+      border-color: var(--gold);
+    }
+
+    .page-footer-note p {
+      font-size: 12px;
+      color: var(--ink-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
 <body>
 
-<h1>定期公演</h1>
+<!-- ===== PAGE HEADER ===== -->
+<header class="page-header">
+  <div class="page-header__deco">Concert</div>
+  <p class="page-header__label">Regular Concerts</p>
+  <h1 class="page-header__title">定期公演</h1>
+  <div class="page-header__rule">
+    <div class="page-header__rule-icon"></div>
+  </div>
+</header>
 
-<p>
-ふるさと音楽会のメイン公演です。  
-山口県各地で年1回開催しています。
-</p>
+<!-- ===== TIMELINE ===== -->
+<main class="section">
+  <div class="timeline">
+
+    <!-- 第6回 -->
+    <article class="concert concert--even" id="concert-6">
+      <div class="concert__content">
+        <p class="concert__num">6th Concert</p>
+        <div class="latest-badge">最新公演</div>
+        <h2 class="concert__title">第６回 ふるさと音楽会</h2>
+        <div class="concert__divider"></div>
+        <div class="concert__meta">
+          <div class="concert__date">
+            <span class="concert__date-icon">◆</span>
+            <span>２０２４年１月６日（土）</span>
+          </div>
+          <div class="concert__venue">
+            <span class="concert__venue-icon">◆</span>
+            <span>スターピア下松　展示ホール</span>
+          </div>
+        </div>
+      </div>
+      <div class="concert__center">
+        <div class="concert__node"></div>
+      </div>
+      <div class="concert__image">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_8c383f7216964dd7ab623456e0deef16~mv2.jpg/v1/fill/w_524,h_741,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_8c383f7216964dd7ab623456e0deef16~mv2.jpg"
+          alt="第6回ふるさと音楽会"
+          loading="lazy"
+        />
+      </div>
+    </article>
+
+    <!-- 第5回 -->
+    <article class="concert concert--odd" id="concert-5">
+      <div class="concert__image">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_586437b8d2954994bb231c026f2de514~mv2.jpg/v1/fill/w_556,h_787,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_586437b8d2954994bb231c026f2de514~mv2.jpg"
+          alt="第5回ふるさと音楽会"
+          loading="lazy"
+        />
+      </div>
+      <div class="concert__center">
+        <div class="concert__node"></div>
+      </div>
+      <div class="concert__content">
+        <p class="concert__num">5th Concert</p>
+        <h2 class="concert__title">第５回 ふるさと音楽会</h2>
+        <div class="concert__divider"></div>
+        <div class="concert__meta">
+          <div class="concert__date">
+            <span class="concert__date-icon">◆</span>
+            <span>２０２２年９月３日（土）</span>
+          </div>
+          <div class="concert__venue">
+            <span class="concert__venue-icon">◆</span>
+            <span>下関生涯学習プラザ　宙のホール</span>
+          </div>
+          <div class="concert__date" style="margin-top:10px;">
+            <span class="concert__date-icon">◆</span>
+            <span>２０２２年９月４日（日）</span>
+          </div>
+          <div class="concert__venue">
+            <span class="concert__venue-icon">◆</span>
+            <span>防府市地域交流センター アスピラート　音楽ホール</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 第4回 -->
+    <article class="concert concert--even" id="concert-4">
+      <div class="concert__content">
+        <p class="concert__num">4th Concert</p>
+        <h2 class="concert__title">第４回 ふるさと音楽会</h2>
+        <div class="concert__divider"></div>
+        <div class="concert__meta">
+          <div class="concert__date">
+            <span class="concert__date-icon">◆</span>
+            <span>２０２１年１２月２８日（火）</span>
+          </div>
+          <div class="concert__venue">
+            <span class="concert__venue-icon">◆</span>
+            <span>防府市公会堂</span>
+          </div>
+        </div>
+      </div>
+      <div class="concert__center">
+        <div class="concert__node"></div>
+      </div>
+      <div class="concert__image">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_151dbee5dc294c04adb1239b6dd8050c~mv2.jpg/v1/fill/w_486,h_687,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_151dbee5dc294c04adb1239b6dd8050c~mv2.jpg"
+          alt="第4回ふるさと音楽会"
+          loading="lazy"
+        />
+      </div>
+    </article>
+
+    <!-- 第3回 -->
+    <article class="concert concert--odd" id="concert-3">
+      <div class="concert__image">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_15d0343280f34f03b4fd838d5acff404~mv2.jpg/v1/fill/w_486,h_688,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_15d0343280f34f03b4fd838d5acff404~mv2.jpg"
+          alt="第3回ふるさと音楽会"
+          loading="lazy"
+        />
+      </div>
+      <div class="concert__center">
+        <div class="concert__node"></div>
+      </div>
+      <div class="concert__content">
+        <p class="concert__num">3rd Concert</p>
+        <h2 class="concert__title">第３回 ふるさと音楽会</h2>
+        <div class="concert__divider"></div>
+        <div class="concert__meta">
+          <div class="concert__date">
+            <span class="concert__date-icon">◆</span>
+            <span>２０２０年１月５日（日）</span>
+          </div>
+          <div class="concert__venue">
+            <span class="concert__venue-icon">◆</span>
+            <span>防府市地域交流センター アスピラート　音楽ホール</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 第2回 -->
+    <article class="concert concert--even" id="concert-2">
+      <div class="concert__content">
+        <p class="concert__num">2nd Concert</p>
+        <h2 class="concert__title">第２回 ふるさと音楽会</h2>
+        <div class="concert__divider"></div>
+        <div class="concert__meta">
+          <div class="concert__date">
+            <span class="concert__date-icon">◆</span>
+            <span>２０１９年１月５日（土）</span>
+          </div>
+          <div class="concert__venue">
+            <span class="concert__venue-icon">◆</span>
+            <span>防府市地域交流センター アスピラート　音楽ホール</span>
+          </div>
+        </div>
+      </div>
+      <div class="concert__center">
+        <div class="concert__node"></div>
+      </div>
+      <div class="concert__image">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_6cd43261118c48bbb930f37b3821daf5~mv2.jpg/v1/fill/w_486,h_688,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_6cd43261118c48bbb930f37b3821daf5~mv2.jpg"
+          alt="第2回ふるさと音楽会"
+          loading="lazy"
+        />
+      </div>
+    </article>
+
+    <!-- 第1回 -->
+    <article class="concert concert--odd" id="concert-1">
+      <div class="concert__image">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_8af38e0ab41441cdab82769c9a2c2f4e~mv2.jpg/v1/fill/w_486,h_690,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_8af38e0ab41441cdab82769c9a2c2f4e~mv2.jpg"
+          alt="第1回ふるさと音楽会"
+          loading="lazy"
+        />
+      </div>
+      <div class="concert__center">
+        <div class="concert__node"></div>
+      </div>
+      <div class="concert__content">
+        <p class="concert__num">1st Concert</p>
+        <h2 class="concert__title">第１回 ふるさと音楽会</h2>
+        <div class="concert__divider"></div>
+        <div class="concert__meta">
+          <div class="concert__date">
+            <span class="concert__date-icon">◆</span>
+            <span>２０１８年３月１６日（金）</span>
+          </div>
+          <div class="concert__venue">
+            <span class="concert__venue-icon">◆</span>
+            <span>防府市地域交流センター アスピラート　音楽ホール</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div><!-- /.timeline -->
+</main>
+
+<!-- ===== FOOTER NOTE ===== -->
+<div class="page-footer-note">
+  <p>お問い合わせ</p>
+  <a href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a>
+</div>
+
+<!-- ===== Scroll-reveal ===== -->
+<script>
+  const concerts = document.querySelectorAll('.concert');
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  concerts.forEach(c => io.observe(c));
+</script>
 
 </body>
 </html>
