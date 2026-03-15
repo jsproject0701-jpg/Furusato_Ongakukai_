@@ -99,7 +99,7 @@
   font-size: clamp(0.75rem, 1.2vw, 1rem);
   color: var(--accent2);
   letter-spacing: 0.2em;
-  margin-top: -0,5rem;  /* ← マイナスにして上に引き上げる */
+  margin-top: -0.5rem;  /* ← マイナスにして上に引き上げる */
 }
 
 .landing-tagline {
@@ -1089,7 +1089,9 @@ return;
 //
 // MEMBERS
 //
-membersData.length = 0;
+if(data.members){
+  membersData.length = 0;
+}
 
 data.members.forEach(r=>{
 membersData.push({
@@ -1110,11 +1112,6 @@ if(data.concerts.length){
 
 const c = data.concerts[0];
 
-document.querySelector("#nextConcertSlide .carousel-title").innerHTML = c[0];
-document.querySelector("#nextConcertSlide .carousel-desc").innerHTML =
-`${c[1]}<br>${c[2]}<br>開演 ${c[3]}`;
-document.querySelector("#nextConcertSlide .carousel-image").style.backgroundImage =
-`linear-gradient(to right, rgba(15,30,20,0.3), rgba(15,30,20,0.7)), url('${c[4]}')`;
 document.getElementById("concertTitle").innerText = c[0];
 
 document.getElementById("concertInfo").innerHTML = `
