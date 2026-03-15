@@ -1151,7 +1151,7 @@ if(window.instgrm){
 //
 // HERO
 //
-const heroHTML = data.hero.map((h,i)=>`
+const heroHTML = data.heros.map((h,i)=>`
 <div class="carousel-slide ${i===0?'active':''}">
   <div class="carousel-image"
     style="background-image:
@@ -1180,7 +1180,7 @@ const heroHTML = data.hero.map((h,i)=>`
 document.getElementById("heroCarousel").innerHTML =
 heroHTML + `
 <div class="carousel-dots">
-${data.hero.map((_,i)=>`
+${data.heros.map((_,i)=>`
 <div class="carousel-dot ${i===0?'active':''}" onclick="goSlide(${i})"></div>
 `).join("")}
 </div>
