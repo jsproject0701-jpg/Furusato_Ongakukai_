@@ -1228,13 +1228,20 @@ const d = upcoming.date;
 const year = d.getFullYear();
 const month = d.getMonth()+1;
 const day = d.getDate();
+const time = upcoming.time;
 
+let displayTime = time;
+
+if(time.includes("T")){
+  displayTime = time.slice(11,16);
+}
+  
 document.getElementById("concertTitle").innerText =
 upcoming.title;
 
 document.getElementById("concertInfo").innerHTML = `
 📍 会場：${upcoming.venue}<br>
-🕐 開演：${upcoming.time}<br>
+🕐 開演：${displayTime}<br>
 🎟 入場無料
 `;
 
