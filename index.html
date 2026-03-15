@@ -200,6 +200,25 @@
     white-space: nowrap;
   }
   .nav-links a:hover { color: var(--accent2); }
+
+  #main-nav.scrolled{
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(0,0,0,0.08);
+    box-shadow:0 6px 24px rgba(0,0,0,0.08);
+  }
+  
+  #main-nav.scrolled .nav-logo-text{
+    color:var(--primary);
+  }
+  
+  #main-nav.scrolled .nav-links a{
+    color:var(--text);
+  }
+  
+  #main-nav.scrolled .nav-links a:hover{
+    color:var(--accent);
+  }
   .hamburger {
     display: none; background: none; border: none;
     cursor: pointer; flex-direction: column; gap: 5px; padding: 4px;
@@ -1102,9 +1121,14 @@ goSlide((currentSlide + 1) % slides.length);
 // ============ NAV SHOW ON SCROLL ============
 const nav = document.getElementById('main-nav');
 window.addEventListener('scroll', () => {
-  if(window.scrollY > 200) {
-    nav.classList.add('visible');
-  }
+
+if(window.scrollY > 200){
+  nav.classList.add('visible');
+  nav.classList.add('scrolled');
+}else{
+  nav.classList.remove('scrolled');
+}
+
 });
 
 
