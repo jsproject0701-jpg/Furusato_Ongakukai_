@@ -1321,16 +1321,16 @@ for(let x=0;x<firstDay;x++){
 cells += `<div class="cal-day empty"></div>`;
 }
 
-for(let d=1; d<=daysInMonth; d++){
+for(let day=1; day<=daysInMonth; day++){
 
-const concert = concerts.find(c=>c.day===d);
+const concert = concerts.find(c=>c.day===day);
 
 if(concert){
 cells += `<div class="cal-day has-concert"
 onclick="showConcertDetail(${concert.index})"
-title="${mo}月${d}日 公演">${d}</div>`;
+title="${mo}月${day}日 公演">${day}</div>`;
 }else{
-cells += `<div class="cal-day">${d}</div>`;
+cells += `<div class="cal-day">${day}</div>`;
 }
 
 }
