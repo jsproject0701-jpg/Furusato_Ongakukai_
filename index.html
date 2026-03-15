@@ -334,18 +334,20 @@
   }
 
   /* Activities */
-  .activities-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem; max-width: 1200px; margin: 0 auto;
-  }
+ .activities-grid {
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:1.5rem;
+max-width:900px;
+margin:0 auto;
+}
  .activity-card{
   position:relative;
   overflow:hidden;
   color:white;
-  border-radius:6px;
+  border-radius:10px;
   cursor:pointer;
-  height:120px;
+  aspect-ratio:4/3;
   display:flex;
   align-items:flex-end;
   padding:18px;
@@ -691,6 +693,9 @@ margin-top:6px;
     .parallax{
     background-attachment:scroll;
     }
+    .activities-grid{
+    grid-template-columns:1fr;
+    }
   }
 
 
@@ -872,8 +877,10 @@ max-width:520px !important;
   <h2 class="section-title">ふるさと音楽会とは</h2>
   <div class="divider"></div>
 
-  <!-- Activities -->
-  <a href="teiki.html" class="activity-card activity-concert">
+ <!-- Activities -->
+<div class="activities-grid">
+
+<a href="teiki.html" class="activity-card activity-concert">
   <div class="activity-name">定期公演</div>
   <div class="activity-desc">...</div>
 </a>
@@ -892,6 +899,8 @@ max-width:520px !important;
   <div class="activity-name">音楽教育・レッスン</div>
   <div class="activity-desc">...</div>
 </a>
+
+</div>
   </div>
 
   <div class="about-grid">
