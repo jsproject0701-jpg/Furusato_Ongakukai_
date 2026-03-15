@@ -675,40 +675,111 @@ margin-top:6px;
   }
 
   /* ===================== RESPONSIVE ===================== */
-  @media (max-width: 768px) {
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .carousel-slide { flex-direction: column; }
-    .carousel-image { width: 100%; height: 45%; }
-    .carousel-body { padding: 1.5rem; }
-    .next-concert { flex-direction: column; gap: 1.5rem; padding: 1.5rem; }
-    .calendar-months { grid-template-columns: repeat(2, 1fr); }
-    .members-grid { grid-template-columns: repeat(2, 1fr); }
-    .landing-content { padding: 0 6%; text-align: center; }
-    .landing-logo { margin: 2rem auto; }
-    .section { padding: 4rem 5%; }
-    .title-arch text{
-      font-size:38px;
-    }
-    .parallax{
-    background-attachment:scroll;
-    }
-    .activities-grid{
-    grid-template-columns:1fr;
-    }
-   .title-arch{
-display:none;
-}
 
-.landing-title::after{
-content:"ふるさと音楽会";
-font-family:'Noto Serif JP';
-font-size:42px;
-display:block;
-letter-spacing:0.1em;
-}
+@media (max-width:768px) {
+
+  /* ナビ */
+  .nav-links{
+    display:none;
   }
+
+  .hamburger{
+    display:flex;
+  }
+
+  /* セクション */
+  .section{
+    padding:4rem 5%;
+  }
+
+  .about-grid{
+    grid-template-columns:1fr;
+    gap:2rem;
+  }
+
+  .members-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .calendar-months{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  /* HEROカルーセル */
+  .carousel-slide{
+    flex-direction:column;
+  }
+
+  .carousel-image{
+    width:100%;
+    height:45%;
+  }
+
+  .carousel-body{
+    padding:1.5rem;
+  }
+
+  /* NEXT CONCERT */
+  .next-concert{
+    flex-direction:column;
+    gap:1.5rem;
+    padding:1.5rem;
+  }
+
+  /* ACTIVITIES */
+  .activities-grid{
+    grid-template-columns:1fr;
+  }
+
+  /* LP */
+
+  .landing-content{
+    justify-content:center;
+    padding:0 6%;
+    text-align:center;
+  }
+
+  .landing-top{
+    margin-top:-40px;
+  }
+
+  .landing-title{
+    font-size:clamp(2rem,8vw,3rem);
+  }
+
+  .landing-sub{
+    font-size:0.8rem;
+    margin-top:0.3rem;
+  }
+
+  .landing-tagline{
+    font-size:0.8rem;
+  }
+
+  /* SVGタイトル */
+
+  .title-arch{
+    max-width:90%;
+    transform:translateY(0);
+  }
+
+  .title-arch text{
+    font-size:40px;
+  }
+
+  /* 動画 */
+
+  .landing-video{
+    filter:brightness(0.7);
+  }
+
+  /* パララックス */
+
+  .parallax{
+    background-attachment:scroll;
+  }
+
+}
 
 
   .title-arch{
