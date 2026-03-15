@@ -949,7 +949,7 @@ max-width:520px !important;
 
   <!-- Annual Calendar -->
   <div class="calendar-wrap">
-    <div class="calendar-header">2025年 公演カレンダー</div>
+    <div class="calendar-header"></div>
     <div class="calendar-months" id="calendarGrid"></div>
   </div>
 
@@ -1248,8 +1248,8 @@ const weekday = week[d.getDay()];
 
 document.getElementById("nextWeek").innerText = weekday;
 const year = d.getFullYear();
-const month = d.getMonth() + 1;
-const day = d.getDate();
+const month = String(d.getMonth()+1).padStart(2,"0");
+const day = String(d.getDate()).padStart(2,"0");
 
 document.querySelector(".next-month").innerText = year;
 document.querySelector(".next-day").innerText = month + "." + day;
@@ -1257,11 +1257,21 @@ document.querySelector(".next-year").innerText = "";
 
 let displayTime = upcoming.time;
 
-if(displayTime instanceof Date){
-displayTime = displayTime.toLocaleTimeString("ja-JP",{
+if(displayTime){
+
+if(typeof displayTime === "string"){
+displayTime = displayTime;
+
+}else{
+
+const t = new Date(displayTime);
+displayTime = t.toLocaleTimeString("ja-JP",{
 hour:"2-digit",
 minute:"2-digit"
 });
+
+}
+
 }
 
 document.getElementById("concertTitle").innerText =
@@ -1305,8 +1315,10 @@ const dayNames = ["日","月","火","水","木","金","土"];
 
 const calGrid = document.getElementById("calendarGrid");
 
-const year = new Date().getFullYear();
-
+const years = data.concerts.map(c=> new Date(c[1]).getFullYear());
+const year = Math.max(...years);
+document.querySelector(".calendar-header").innerText =
+year + "年 公演カレンダー";
 calGrid.innerHTML = months.map((m,i)=>{
 
 const mo = i + 1;
@@ -1417,13 +1429,18 @@ const d = new Date(c[1]);
 const month = d.getMonth()+1;
 const day = d.getDate();
 
+const time = new Date(c[3]).toLocaleTimeString("ja-JP",{
+hour:"2-digit",
+minute:"2-digit"
+});
+
 document.getElementById("detailTitle").innerText =
 c[0];
 
 document.getElementById("detailInfo").innerHTML = `
 📅 ${month}月${day}日<br>
 📍 ${c[2]}<br>
-🕐 開演 ${c[3]}
+🕐 開演 ${time}
 `;
 
 document.getElementById("concertDetail").style.display = "block";
@@ -1432,6 +1449,7 @@ document.getElementById("concertDetail")
 .scrollIntoView({behavior:"smooth"});
 
 }
+
 </script>
 <script async src="https://www.instagram.com/embed.js"></script>
 </body>
