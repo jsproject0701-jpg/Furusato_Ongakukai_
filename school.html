@@ -1,1 +1,558 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>音楽鑑賞教室 | ふるさと音楽会</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS Variables — teiki / machikado と共通 ===== */
+    :root {
+      --bg:         #faf8f4;
+      --bg-alt:     #f2ede4;
+      --ink:        #1c1610;
+      --ink-muted:  #5a4f42;
+      --gold:       #b89a5a;
+      --gold-light: #d4bc82;
+      --gold-pale:  #ede3cc;
+      --line:       rgba(184,154,90,0.30);
+      --ff-serif:   'Noto Serif JP', 'YuMincho', serif;
+      --ff-latin:   'Cormorant Garamond', 'Georgia', serif;
+      --ease:       cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      font-family: var(--ff-serif);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+
+    /* ====================================================
+       PAGE HEADER（3ページ共通構造）
+    ==================================================== */
+    .page-header {
+      position: relative;
+      padding: 80px 24px 64px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%,
+        rgba(184,154,90,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header__deco {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--ff-latin);
+      font-size: clamp(80px, 18vw, 200px);
+      font-style: italic;
+      font-weight: 300;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,154,90,0.10);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+    .page-header__label {
+      font-family: var(--ff-latin);
+      font-size: 11px;
+      letter-spacing: 0.30em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .page-header__title {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 300;
+      letter-spacing: 0.20em;
+      line-height: 1.4;
+      position: relative;
+      color: var(--ink);
+    }
+    .page-header__rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 24px auto 0;
+      width: fit-content;
+      position: relative;
+    }
+    .page-header__rule::before,
+    .page-header__rule::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+    .page-header__rule-icon {
+      width: 6px; height: 6px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* ====================================================
+       WRAPPER
+    ==================================================== */
+    .page-body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    /* ====================================================
+       EVENT CARD — 今回のような単一イベントの詳細
+    ==================================================== */
+    .event-card {
+      background: #fff;
+      border: 1px solid rgba(184,154,90,0.18);
+      border-radius: 2px;
+      box-shadow: 0 2px 24px rgba(28,22,16,0.05);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .event-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 上段：横並び2枚のスナップショット */
+    .event-card__snapshots {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .event-card__snap {
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .event-card__snap img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s var(--ease);
+    }
+    .event-card__snap:hover img { transform: scale(1.05); }
+    .event-card__snap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(184,154,90,0);
+      transition: background 0.4s ease;
+      pointer-events: none;
+    }
+    .event-card__snap:hover::after { background: rgba(184,154,90,0.07); }
+
+    /* 区切り線 */
+    .event-card__divider {
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* 下段：テキスト情報 */
+    .event-card__body {
+      padding: 40px 48px 48px;
+    }
+
+    .event-card__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold-pale);
+      border: 1px solid var(--gold-light);
+      border-radius: 2px;
+      padding: 3px 14px;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      font-family: var(--ff-serif);
+      margin-bottom: 20px;
+    }
+
+    .event-card__headline {
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      line-height: 1.55;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    .event-card__meta-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--ink-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .event-card__meta-icon {
+      color: var(--gold);
+      font-size: 9px;
+      flex-shrink: 0;
+    }
+
+    /* 本文テキスト */
+    .event-card__text {
+      margin-top: 28px;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink-muted);
+      letter-spacing: 0.07em;
+      line-height: 2.1;
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+    }
+
+    /* ====================================================
+       フライヤー（大判写真）
+    ==================================================== */
+    .flyer-wrap {
+      margin-top: 48px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s var(--ease) 0.15s, transform 0.7s var(--ease) 0.15s;
+    }
+    .flyer-wrap.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .flyer-label {
+      font-family: var(--ff-latin);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .flyer-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .flyer-img-wrap {
+      overflow: hidden;
+      border-radius: 2px;
+      border: 1px solid rgba(184,154,90,0.15);
+      box-shadow: 0 4px 32px rgba(28,22,16,0.08);
+      cursor: pointer;
+      position: relative;
+    }
+    .flyer-img-wrap img {
+      width: 100%;
+      max-height: 680px;
+      object-fit: contain;
+      display: block;
+      background: var(--bg-alt);
+      transition: transform 0.6s var(--ease);
+    }
+    .flyer-img-wrap:hover img { transform: scale(1.02); }
+    .flyer-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(184,154,90,0);
+      transition: background 0.4s ease;
+      pointer-events: none;
+    }
+    .flyer-img-wrap:hover::after { background: rgba(184,154,90,0.05); }
+
+    /* ====================================================
+       LIGHTBOX（machikado.html と同じ実装）
+    ==================================================== */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(20,16,10,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      backdrop-filter: blur(4px);
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox__inner {
+      position: relative;
+      max-width: min(92vw, 860px);
+      max-height: 92vh;
+    }
+    .lightbox__img {
+      display: block;
+      max-width: 100%;
+      max-height: 92vh;
+      object-fit: contain;
+      border-radius: 2px;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+      transform: scale(0.96);
+      transition: transform 0.35s ease;
+    }
+    .lightbox.open .lightbox__img { transform: scale(1); }
+    .lightbox__close {
+      position: absolute;
+      top: -36px; right: 0;
+      background: none; border: none;
+      color: rgba(255,255,255,0.7);
+      font-family: var(--ff-latin);
+      font-size: 13px;
+      letter-spacing: 0.20em;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 4px 0;
+    }
+    .lightbox__close:hover { color: var(--gold-light); }
+    .lightbox__prev,
+    .lightbox__next {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      background: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.7);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .lightbox__prev { left: 20px; }
+    .lightbox__next { right: 20px; }
+    .lightbox__prev:hover,
+    .lightbox__next:hover { border-color: var(--gold-light); color: var(--gold-light); }
+    .lightbox__counter {
+      position: absolute;
+      bottom: -28px; left: 50%; transform: translateX(-50%);
+      font-family: var(--ff-latin);
+      font-size: 12px;
+      letter-spacing: 0.20em;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ====================================================
+       FOOTER NOTE
+    ==================================================== */
+    .page-footer-note {
+      text-align: center;
+      padding: 40px 24px 80px;
+      border-top: 1px solid var(--line);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .page-footer-note p {
+      font-size: 12px;
+      color: var(--ink-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .page-footer-note a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .page-footer-note a:hover { border-color: var(--gold); }
+
+    /* ====================================================
+       MOBILE
+    ==================================================== */
+    @media (max-width: 600px) {
+      .event-card__snapshots { grid-template-columns: 1fr; }
+      .event-card__snap img  { aspect-ratio: 3/2; }
+      .event-card__body      { padding: 28px 24px 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== PAGE HEADER ===== -->
+<header class="page-header">
+  <div class="page-header__deco">Classroom</div>
+  <p class="page-header__label">Music Appreciation Class</p>
+  <h1 class="page-header__title">音楽鑑賞教室</h1>
+  <div class="page-header__rule">
+    <div class="page-header__rule-icon"></div>
+  </div>
+</header>
+
+<!-- ===== CONTENT ===== -->
+<div class="page-body">
+
+  <!-- イベントカード -->
+  <div class="event-card" id="event-card">
+
+    <!-- スナップショット2枚 -->
+    <div class="event-card__snapshots">
+      <div class="event-card__snap" data-index="0">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_0e3c3134fe664e04a58b5d81e1ba2afa~mv2.jpg/v1/fill/w_453,h_340,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_0e3c3134fe664e04a58b5d81e1ba2afa~mv2.jpg"
+          alt="音楽鑑賞教室の様子 1"
+          loading="lazy"
+        />
+      </div>
+      <div class="event-card__snap" data-index="1">
+        <img
+          src="https://static.wixstatic.com/media/11a6b4_23b5aa36bad6473bb114d5166daf0552~mv2.jpg/v1/fill/w_453,h_340,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_23b5aa36bad6473bb114d5166daf0552~mv2.jpg"
+          alt="音楽鑑賞教室の様子 2"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <div class="event-card__divider"></div>
+
+    <!-- テキスト情報 -->
+    <div class="event-card__body">
+      <div class="event-card__tag">Report</div>
+      <h2 class="event-card__headline">下関市・角倉小学校<br>音楽鑑賞教室</h2>
+      <div class="event-card__meta-row">
+        <span class="event-card__meta-icon">◆</span>
+        <span>２０２３年１２月１９日（火）</span>
+      </div>
+      <div class="event-card__meta-row">
+        <span class="event-card__meta-icon">◆</span>
+        <span>下関市立 角倉小学校</span>
+      </div>
+      <p class="event-card__text">
+        下関市の角倉小学校で音楽鑑賞教室を開催しました。<br>
+        子どもたちに生の演奏をより身近に感じていただけるよう、ふるさと音楽会のメンバーが学校へ伺い、演奏をお届けしました。
+      </p>
+    </div>
+  </div><!-- /.event-card -->
+
+  <!-- フライヤー -->
+  <div class="flyer-wrap" id="flyer-wrap">
+    <p class="flyer-label">Program / Flyer</p>
+    <div class="flyer-img-wrap" data-index="2">
+      <img
+        src="https://static.wixstatic.com/media/11a6b4_14e9c2315d45457481535631fac84dc1~mv2.jpeg/v1/fill/w_972,h_1378,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_14e9c2315d45457481535631fac84dc1~mv2.jpeg"
+        alt="音楽鑑賞教室 プログラム"
+        loading="lazy"
+      />
+    </div>
+  </div>
+
+</div><!-- /.page-body -->
+
+<!-- ===== FOOTER NOTE ===== -->
+<div class="page-footer-note">
+  <p>お問い合わせ</p>
+  <a href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a>
+</div>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="写真を拡大表示">
+  <div class="lightbox__inner">
+    <button class="lightbox__close" id="lb-close">CLOSE ✕</button>
+    <img class="lightbox__img" id="lb-img" src="" alt="" />
+    <div class="lightbox__counter" id="lb-counter"></div>
+  </div>
+  <button class="lightbox__prev" id="lb-prev" aria-label="前の写真">&#8592;</button>
+  <button class="lightbox__next" id="lb-next" aria-label="次の写真">&#8594;</button>
+</div>
+
+<script>
+  /* ===== Scroll Reveal ===== */
+  const revealEls = document.querySelectorAll('.event-card, .flyer-wrap');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ===== Lightbox ===== */
+  const imgs = [
+    {
+      src: 'https://static.wixstatic.com/media/11a6b4_0e3c3134fe664e04a58b5d81e1ba2afa~mv2.jpg/v1/fill/w_453,h_340,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_0e3c3134fe664e04a58b5d81e1ba2afa~mv2.jpg',
+      alt: '音楽鑑賞教室の様子 1'
+    },
+    {
+      src: 'https://static.wixstatic.com/media/11a6b4_23b5aa36bad6473bb114d5166daf0552~mv2.jpg/v1/fill/w_453,h_340,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_23b5aa36bad6473bb114d5166daf0552~mv2.jpg',
+      alt: '音楽鑑賞教室の様子 2'
+    },
+    {
+      src: 'https://static.wixstatic.com/media/11a6b4_14e9c2315d45457481535631fac84dc1~mv2.jpeg/v1/fill/w_972,h_1378,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/11a6b4_14e9c2315d45457481535631fac84dc1~mv2.jpeg',
+      alt: '音楽鑑賞教室 プログラム'
+    }
+  ];
+
+  const lb      = document.getElementById('lightbox');
+  const lbImg   = document.getElementById('lb-img');
+  const lbCount = document.getElementById('lb-counter');
+  let current   = 0;
+
+  function openLightbox(index) {
+    current = index;
+    lbImg.src = imgs[current].src;
+    lbImg.alt = imgs[current].alt;
+    lbCount.textContent = `${current + 1} / ${imgs.length}`;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function showNext() { openLightbox((current + 1) % imgs.length); }
+  function showPrev() { openLightbox((current - 1 + imgs.length) % imgs.length); }
+
+  document.querySelectorAll('.event-card__snap, .flyer-img-wrap').forEach(el => {
+    el.addEventListener('click', () => openLightbox(+el.dataset.index));
+  });
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-next').addEventListener('click', showNext);
+  document.getElementById('lb-prev').addEventListener('click', showPrev);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowRight') showNext();
+    if (e.key === 'ArrowLeft')  showPrev();
+  });
+
+  let touchStartX = null;
+  lb.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) dx < 0 ? showNext() : showPrev();
+    touchStartX = null;
+  });
+</script>
+
+</body>
+</html>
