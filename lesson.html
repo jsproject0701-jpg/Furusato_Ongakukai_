@@ -8,9 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 
   <style>
-    /* ===== CSS Variables — 共通 ===== */
+    /* ===== CSS Variables ===== */
     :root {
       --bg:         #faf8f4;
       --bg-alt:     #f2ede4;
@@ -35,7 +36,7 @@
       overflow-x: hidden;
     }
 
-    /* ===== Page Header（共通）===== */
+    /* ===== Page Header ===== */
     .page-header {
       position: relative;
       padding: 80px 24px 64px;
@@ -51,8 +52,7 @@
     }
     .page-header__deco {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--ff-latin);
       font-size: clamp(60px, 16vw, 180px);
@@ -89,7 +89,6 @@
       gap: 12px;
       margin: 24px auto 0;
       width: fit-content;
-      position: relative;
     }
     .page-header__rule::before,
     .page-header__rule::after {
@@ -101,11 +100,25 @@
       opacity: 0.6;
     }
     .page-header__rule-icon {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border: 1px solid var(--gold);
       transform: rotate(45deg);
     }
+
+    /* ===== Nav（サブページ用：常時表示） ===== */
+    #main-nav {
+      transform: translateY(0) !important;
+      background: rgba(255,255,255,0.97) !important;
+      border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08) !important;
+    }
+    #main-nav .nav-logo-text { color: var(--primary) !important; }
+    #main-nav .nav-links a   { color: var(--text) !important; }
+    #main-nav .nav-links a:hover { color: var(--accent) !important; }
+    #main-nav .hamburger span { background: var(--primary) !important; }
+
+    /* ページヘッダーの上にナビ分の余白 */
+    .page-header { padding-top: calc(68px + 40px); }
 
     /* ===== Hero Image ===== */
     .hero {
@@ -118,7 +131,6 @@
       transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
     }
     .hero.visible { opacity: 1; transform: translateY(0); }
-
     .hero__inner {
       position: relative;
       overflow: hidden;
@@ -133,16 +145,10 @@
       transition: transform 0.8s var(--ease);
     }
     .hero__inner:hover img { transform: scale(1.03); }
-
-    /* 画像上のゴールドグラデオーバーレイ */
     .hero__overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        transparent 55%,
-        rgba(28,22,16,0.35) 100%
-      );
+      background: linear-gradient(to bottom, transparent 55%, rgba(28,22,16,0.35) 100%);
       pointer-events: none;
     }
 
@@ -153,7 +159,7 @@
       padding: 0 24px;
     }
 
-    /* ===== Divider（共通）===== */
+    /* ===== Divider ===== */
     .section-divider {
       display: flex;
       align-items: center;
@@ -168,8 +174,7 @@
       background: var(--line);
     }
     .section-divider__icon {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border: 1px solid var(--gold);
       transform: rotate(45deg);
       flex-shrink: 0;
@@ -187,7 +192,6 @@
       transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
     }
     .intro.visible { opacity: 1; transform: translateY(0); }
-
     .intro__heading-col {
       border-right: 1px solid var(--line);
       padding-right: 60px;
@@ -210,13 +214,10 @@
       color: var(--ink);
     }
     .intro__accent-line {
-      width: 32px;
-      height: 2px;
+      width: 32px; height: 2px;
       background: var(--gold);
       opacity: 0.7;
     }
-
-    .intro__body-col {}
     .intro__body {
       font-size: 14px;
       font-weight: 300;
@@ -234,7 +235,6 @@
       transition: opacity 0.75s var(--ease) 0.1s, transform 0.75s var(--ease) 0.1s;
     }
     .lessons.visible { opacity: 1; transform: translateY(0); }
-
     .lessons__heading {
       font-family: var(--ff-latin);
       font-size: 11px;
@@ -244,13 +244,11 @@
       margin-bottom: 28px;
       text-align: center;
     }
-
     .lessons__grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
-
     .lesson-card {
       background: white;
       border: 1px solid rgba(184,154,90,0.18);
@@ -264,13 +262,7 @@
       box-shadow: 0 6px 28px rgba(28,22,16,0.09);
       transform: translateY(-3px);
     }
-
-    .lesson-card__icon {
-      font-size: 22px;
-      margin-bottom: 14px;
-      line-height: 1;
-    }
-
+    .lesson-card__icon { font-size: 22px; margin-bottom: 14px; line-height: 1; }
     .lesson-card__name {
       font-size: 13px;
       font-weight: 400;
@@ -278,7 +270,6 @@
       color: var(--ink);
       margin-bottom: 10px;
     }
-
     .lesson-card__desc {
       font-size: 11.5px;
       font-weight: 300;
@@ -295,7 +286,6 @@
       transition: opacity 0.75s var(--ease) 0.15s, transform 0.75s var(--ease) 0.15s;
     }
     .contact-block.visible { opacity: 1; transform: translateY(0); }
-
     .contact-block__header {
       text-align: center;
       margin-bottom: 40px;
@@ -322,7 +312,6 @@
       letter-spacing: 0.06em;
     }
 
-    /* フォーム本体 */
     .contact-form {
       max-width: 600px;
       margin: 0 auto;
@@ -330,19 +319,16 @@
       flex-direction: column;
       gap: 16px;
     }
-
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
-
     .form-field {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-
     .form-field label {
       font-size: 11px;
       letter-spacing: 0.20em;
@@ -350,7 +336,6 @@
       font-family: var(--ff-latin);
       text-transform: uppercase;
     }
-
     .form-field input,
     .form-field textarea {
       background: white;
@@ -367,22 +352,24 @@
       resize: none;
       width: 100%;
     }
-
     .form-field input::placeholder,
     .form-field textarea::placeholder {
       color: rgba(90,79,66,0.35);
       font-size: 13px;
     }
-
     .form-field input:focus,
     .form-field textarea:focus {
       border-color: var(--gold);
       box-shadow: 0 0 0 3px rgba(184,154,90,0.10);
     }
-
     .form-field textarea { height: 140px; }
 
-    /* 送信ボタン */
+    /* エラー状態 */
+    .form-field input.error,
+    .form-field textarea.error {
+      border-color: rgba(184,90,90,0.6);
+    }
+
     .btn-submit {
       align-self: center;
       margin-top: 8px;
@@ -410,29 +397,30 @@
       transition: transform 0.35s var(--ease);
       z-index: 0;
     }
-    .btn-submit:hover::before { transform: scaleX(1); }
-    .btn-submit:hover { color: white; box-shadow: 0 4px 20px rgba(184,154,90,0.25); }
+    .btn-submit:not(:disabled):hover::before { transform: scaleX(1); }
+    .btn-submit:not(:disabled):hover { color: white; box-shadow: 0 4px 20px rgba(184,154,90,0.25); }
     .btn-submit span { position: relative; z-index: 1; }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* 送信完了メッセージ */
+    /* 送信完了 */
     .form-success {
       display: none;
       text-align: center;
-      padding: 32px;
+      padding: 40px 32px;
       border: 1px solid rgba(184,154,90,0.30);
       border-radius: 2px;
       background: white;
+      max-width: 600px;
+      margin: 0 auto;
     }
     .form-success.show { display: block; }
-    .form-success__icon {
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
+    .form-success__icon { font-size: 28px; margin-bottom: 16px; }
     .form-success__text {
       font-size: 15px;
       font-weight: 300;
       letter-spacing: 0.10em;
       color: var(--ink-muted);
+      line-height: 2;
     }
 
     /* メールリンク */
@@ -492,20 +480,55 @@
         padding-right: 0;
         padding-bottom: 32px;
       }
-      .lessons__grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .form-row {
-        grid-template-columns: 1fr;
-      }
+      .lessons__grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 400px) {
       .lessons__grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
+<!-- ===== NAV ===== -->
+<nav id="main-nav" class="visible scrolled">
+  <a class="nav-logo-wrap" href="index.html">
+    <img src="images/logo_transparent.png" class="nav-logo-img" alt="ふるさと音楽会ロゴ">
+    <span class="nav-logo-text">ふるさと音楽会</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">ホーム</a></li>
+    <li><a href="index.html#about">ABOUT</a></li>
+    <li class="dropdown">
+      <a href="#">活動</a>
+      <ul class="dropdown-menu">
+        <li><a href="teiki.html">定期公演</a></li>
+        <li><a href="machikado.html">まちかどコンサート</a></li>
+        <li><a href="school.html">音楽鑑賞教室</a></li>
+        <li><a href="lesson.html">音楽教育</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#members">メンバー</a></li>
+    <li><a href="index.html#contact">お問い合わせ</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- モバイルメニュー -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html" onclick="closeMobileMenu()">ホーム</a></li>
+    <li><a href="index.html#about" onclick="closeMobileMenu()">ABOUT</a></li>
+    <li><a href="teiki.html" onclick="closeMobileMenu()">定期公演</a></li>
+    <li><a href="machikado.html" onclick="closeMobileMenu()">まちかどコンサート</a></li>
+    <li><a href="school.html" onclick="closeMobileMenu()">音楽鑑賞教室</a></li>
+    <li><a href="lesson.html" onclick="closeMobileMenu()">音楽教育</a></li>
+    <li><a href="index.html#members" onclick="closeMobileMenu()">メンバー</a></li>
+    <li><a href="index.html#contact" onclick="closeMobileMenu()">お問い合わせ</a></li>
+  </ul>
+</div>
 
 <!-- ===== PAGE HEADER ===== -->
 <header class="page-header">
@@ -518,11 +541,13 @@
 </header>
 
 <!-- ===== HERO IMAGE ===== -->
+<!-- 画像をimages/lesson/lesson_hero.jpgに配置してください -->
 <div class="hero" id="hero">
   <div class="hero__inner">
     <img
-      src="https://static.wixstatic.com/media/11a6b4_f8c2e2a9c5874cbbb82f956b3a95f670~mv2.jpg/v1/fill/w_980,h_352,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_3476_JPG.jpg"
+      src="images/lessons/ongakukyoshitsu.avif"
       alt="音楽教育 ふるさと音楽会"
+      onerror="this.parentElement.style.display='none'"
     />
     <div class="hero__overlay"></div>
   </div>
@@ -587,47 +612,66 @@
     <form class="contact-form" id="contact-form" novalidate>
       <div class="form-row">
         <div class="form-field">
-          <label for="last-name">姓</label>
-          <input type="text" id="last-name" name="lastName" placeholder="山田" />
+          <label for="last-name">姓 <span style="color:var(--gold)">*</span></label>
+          <input type="text" id="last-name" name="lastName" placeholder="山田" autocomplete="family-name" />
         </div>
         <div class="form-field">
-          <label for="first-name">名</label>
-          <input type="text" id="first-name" name="firstName" placeholder="太郎" />
+          <label for="first-name">名 <span style="color:var(--gold)">*</span></label>
+          <input type="text" id="first-name" name="firstName" placeholder="太郎" autocomplete="given-name" />
         </div>
       </div>
       <div class="form-field">
-        <label for="email">メールアドレス</label>
-        <input type="email" id="email" name="email" placeholder="example@mail.com" />
+        <label for="email">メールアドレス <span style="color:var(--gold)">*</span></label>
+        <input type="email" id="email" name="email" placeholder="example@mail.com" autocomplete="email" />
       </div>
       <div class="form-field">
-        <label for="message">メッセージ</label>
+        <label for="message">メッセージ <span style="color:var(--gold)">*</span></label>
         <textarea id="message" name="message" placeholder="ご質問・ご相談の内容をご記入ください。"></textarea>
       </div>
-      <button type="submit" class="btn-submit"><span>送信する</span></button>
+      <button type="submit" class="btn-submit" id="submit-btn"><span>送信する</span></button>
     </form>
 
     <!-- 送信完了 -->
     <div class="form-success" id="form-success">
       <div class="form-success__icon">✦</div>
-      <p class="form-success__text">ありがとうございます。<br>メッセージを受け付けました。</p>
+      <p class="form-success__text">
+        ありがとうございます。<br>
+        メッセージを受け付けました。<br>
+        <span style="font-size:12px;color:var(--gold);">通常2〜3営業日以内にご返信いたします。</span>
+      </p>
     </div>
 
+    <!-- 直接メール案内 -->
     <div class="mail-link-wrap">
       <p>または直接メールでのお問い合わせ</p>
-      <a class="mail-link" href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a>
+      <a class="mail-link" id="lessonMailLink" href="#">お問い合わせ先を読み込み中...</a>
     </div>
   </div>
 
 </div><!-- /.section -->
 
-<!-- ===== FOOTER NOTE ===== -->
-<div class="page-footer-note">
-  <p>お問い合わせ</p>
-  <a href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a>
-</div>
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">ふるさと音楽会</div>
+  <div class="footer-copy">
+    © 2026 ふるさと音楽会 All Rights Reserved.<br>
+    <a href="privacy.html" style="color:rgba(255,255,255,0.4);text-decoration:none;">プライバシーポリシー</a>
+  </div>
+</footer>
 
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
 <script>
-  /* ===== Scroll Reveal ===== */
+  // ===== メールリンクをconfig.jsから設定 =====
+  window.addEventListener("DOMContentLoaded", () => {
+    if (typeof SITE_CONFIG !== "undefined" && SITE_CONFIG.email) {
+      const el = document.getElementById("lessonMailLink");
+      el.href        = "mailto:" + SITE_CONFIG.email;
+      el.textContent = SITE_CONFIG.email;
+    }
+  });
+
+  // ===== Scroll Reveal =====
   const revealTargets = document.querySelectorAll('#hero, #intro, #lessons, #contact-block');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -639,32 +683,54 @@
   }, { threshold: 0.08 });
   revealTargets.forEach(el => io.observe(el));
 
-  /* ===== Form submit (フロントのみ) ===== */
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
+  // ===== お問い合わせフォーム送信 =====
+  // GASのURLはteiki.jsと同じエンドポイントを使用
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbxLP3JZpcW7ON7ay5QO2tzoZmI1Vmi9CsqcUeBnf6rSonl6r2ZqP6gJQTglm5abJmnk/exec";
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setError(field) {
+    field.classList.add('error');
+    field.addEventListener('input', () => field.classList.remove('error'), { once: true });
+  }
+
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const form    = document.getElementById('contact-form');
-    const success = document.getElementById('form-success');
+    const form = e.target;
 
-    /* 簡易バリデーション */
-    const email = form.email.value.trim();
-    const msg   = form.message.value.trim();
-    if (!email || !msg) {
-      /* 未入力フィールドを強調 */
-      [form.email, form.message].forEach(field => {
-        if (!field.value.trim()) {
-          field.style.borderColor = 'rgba(184,90,90,0.6)';
-          field.addEventListener('input', () => {
-            field.style.borderColor = '';
-          }, { once: true });
-        }
+    const lastName  = form.lastName.value.trim();
+    const firstName = form.firstName.value.trim();
+    const email     = form.email.value.trim();
+    const message   = form.message.value.trim();
+
+    // バリデーション
+    let hasError = false;
+    if (!lastName)                      { setError(form.lastName);  hasError = true; }
+    if (!firstName)                     { setError(form.firstName); hasError = true; }
+    if (!email || !emailRegex.test(email)) { setError(form.email);  hasError = true; }
+    if (!message)                       { setError(form.message);   hasError = true; }
+    if (hasError) return;
+
+    // 送信中
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.querySelector('span').textContent = '送信中...';
+
+    try {
+      await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({ lastName, firstName, email, message })
       });
-      return;
+
+      // 成功
+      form.style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+
+    } catch (err) {
+      console.error("Form submit error:", err);
+      btn.disabled = false;
+      btn.querySelector('span').textContent = '送信する';
+      alert('送信に失敗しました。しばらく経ってから再度お試しください。\nまたはメールにてお問い合わせください。');
     }
-
-    form.style.display = 'none';
-    success.classList.add('show');
-
-    /* 実際の送信先は mailto or バックエンドに差し替えてください */
   });
 </script>
 
