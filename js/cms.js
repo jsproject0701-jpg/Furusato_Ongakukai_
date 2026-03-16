@@ -84,8 +84,7 @@ async function loadCMS() {
       document.getElementById("concertTitle").innerText = upcoming.title;
       document.getElementById("concertInfo").innerHTML =
         `📍 会場：${escapeHtml(upcoming.venue)}<br>` +
-        `🕐 開演：${escapeHtml(displayTime)}<br>` +
-        `🎟 入場無料`;
+        `🕐 開演：${escapeHtml(displayTime)}<br>`;
     }
   }
 
