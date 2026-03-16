@@ -76,7 +76,7 @@ async function loadCMS() {
   const months = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
   const dayNames = ["日","月","火","水","木","金","土"];
   const calGrid = document.getElementById("calendarGrid");
-
+  const today = new Date();
   const futureConcerts = data.concerts
     .filter(c => new Date(c[1]) >= today)
     .sort((a,b) => new Date(a[1]) - new Date(b[1]));
