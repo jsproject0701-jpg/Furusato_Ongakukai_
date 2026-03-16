@@ -20,6 +20,7 @@ async function loadConcerts() {
   timeline.innerHTML = concerts.map((c,i)=>{
 
     const odd = i % 2 === 0 ? "concert--odd" : "concert--even";
+    const isLatest = i === 0 ? "latest" : "";
 
     const y = c.date.getFullYear();
     const m = c.date.getMonth()+1;
@@ -33,13 +34,13 @@ async function loadConcerts() {
 
     return `
 
-<article class="concert ${odd}">
+<article class="concert ${odd} ${isLatest}">
   
   <div class="concert__image">
     <img src="${image}" 
          alt="${c.title}" 
          loading="lazy"
-         onerror="this.src='images/coming.svg'">
+         onerror="this.src='images/coming.jpg'">
   </div>
 
   <div class="concert__center">
@@ -47,6 +48,8 @@ async function loadConcerts() {
   </div>
 
   <div class="concert__content">
+
+    ${isLatest ? `<div class="latest-badge">最新公演</div>` : ""}
 
     <p class="concert__num">${num}th Concert</p>
 
