@@ -853,7 +853,7 @@
   /* ===================== PARALLAX ===================== */
   .parallax {
     height: 420px;
-    background-image: url("../images/orchestra.jpg");
+    background-image: url("../images/orchestra.png");
     /* background-attachment: fixed はiOS Safari / iPadで動作しないため scroll に統一 */
     background-attachment: scroll;
     background-size: cover;
