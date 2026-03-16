@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>定期公演 | ふるさと音楽会</title>
 
-  <!-- Google Fonts: Noto Serif JP + Cormorant Garamond -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+
   <style>
     /* ===== CSS Variables ===== */
     :root {
@@ -27,9 +28,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--ff-serif);
       background: var(--bg);
@@ -38,28 +37,35 @@
       overflow-x: hidden;
     }
 
+    /* ===== Nav（サブページ用：常時表示） ===== */
+    #main-nav {
+      transform: translateY(0) !important;
+      background: rgba(255,255,255,0.97) !important;
+      border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08) !important;
+    }
+    #main-nav .nav-logo-text  { color: var(--primary) !important; }
+    #main-nav .nav-links a    { color: var(--text) !important; }
+    #main-nav .nav-links a:hover { color: var(--accent) !important; }
+    #main-nav .hamburger span { background: var(--primary) !important; }
+
     /* ===== Page Header ===== */
     .page-header {
       position: relative;
-      padding: 80px 24px 64px;
+      padding: calc(68px + 40px) 24px 64px;
       text-align: center;
       overflow: hidden;
     }
-
     .page-header::before {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(184,154,90,0.10) 0%, transparent 70%);
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(184,154,90,0.10) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    /* 背景の装飾文字 */
     .page-header__deco {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--ff-latin);
       font-size: clamp(80px, 18vw, 200px);
@@ -72,7 +78,6 @@
       pointer-events: none;
       user-select: none;
     }
-
     .page-header__label {
       font-family: var(--ff-latin);
       font-size: 11px;
@@ -82,7 +87,6 @@
       margin-bottom: 16px;
       position: relative;
     }
-
     .page-header__title {
       font-size: clamp(28px, 5vw, 48px);
       font-weight: 300;
@@ -91,7 +95,6 @@
       position: relative;
       color: var(--ink);
     }
-
     .page-header__rule {
       display: flex;
       align-items: center;
@@ -99,9 +102,7 @@
       gap: 12px;
       margin: 24px auto 0;
       width: fit-content;
-      position: relative;
     }
-
     .page-header__rule::before,
     .page-header__rule::after {
       content: '';
@@ -111,10 +112,8 @@
       background: var(--gold);
       opacity: 0.6;
     }
-
     .page-header__rule-icon {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border: 1px solid var(--gold);
       transform: rotate(45deg);
     }
@@ -131,13 +130,10 @@
       position: relative;
       padding-top: 20px;
     }
-
-    /* 縦線 */
     .timeline::before {
       content: '';
       position: absolute;
-      top: 0;
-      bottom: 0;
+      top: 0; bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 1px;
@@ -149,38 +145,28 @@
       display: grid;
       grid-template-columns: 1fr 60px 1fr;
       align-items: start;
-      gap: 0;
       margin-bottom: 72px;
       opacity: 0;
       transform: translateY(24px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
+    .concert.visible { opacity: 1; transform: translateY(0); }
 
-    .concert.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* 奇数は右にコンテンツ、偶数は左 */
-    .concert--odd .concert__content  { grid-column: 3; grid-row: 1; }
-    .concert--odd .concert__center   { grid-column: 2; grid-row: 1; }
-    .concert--odd .concert__image    { grid-column: 1; grid-row: 1; justify-self: end; }
-
+    .concert--odd  .concert__content { grid-column: 3; grid-row: 1; }
+    .concert--odd  .concert__center  { grid-column: 2; grid-row: 1; }
+    .concert--odd  .concert__image   { grid-column: 1; grid-row: 1; justify-self: end; }
     .concert--even .concert__content { grid-column: 1; grid-row: 1; }
     .concert--even .concert__center  { grid-column: 2; grid-row: 1; }
     .concert--even .concert__image   { grid-column: 3; grid-row: 1; justify-self: start; }
 
-    /* 中央のノード */
     .concert__center {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding-top: 28px;
     }
-
     .concert__node {
-      width: 14px;
-      height: 14px;
+      width: 14px; height: 14px;
       border: 2px solid var(--gold);
       background: var(--bg);
       border-radius: 50%;
@@ -188,13 +174,11 @@
       box-shadow: 0 0 0 4px rgba(184,154,90,0.12);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
     .concert:hover .concert__node {
       transform: scale(1.3);
       box-shadow: 0 0 0 6px rgba(184,154,90,0.18);
     }
 
-    /* コンテンツ */
     .concert__content {
       padding: 24px 28px;
       background: white;
@@ -204,10 +188,8 @@
       transition: box-shadow var(--transition), transform var(--transition);
       max-width: 400px;
     }
-
-    .concert--odd .concert__content  { margin-left: 4px; }
+    .concert--odd  .concert__content { margin-left: 4px; }
     .concert--even .concert__content { margin-right: 4px; }
-
     .concert:hover .concert__content {
       box-shadow: 0 6px 32px rgba(28,22,16,0.09);
       transform: translateY(-2px);
@@ -221,7 +203,6 @@
       text-transform: uppercase;
       margin-bottom: 6px;
     }
-
     .concert__title {
       font-size: 18px;
       font-weight: 400;
@@ -230,49 +211,37 @@
       margin-bottom: 14px;
       color: var(--ink);
     }
-
     .concert__divider {
-      width: 32px;
-      height: 1px;
+      width: 32px; height: 1px;
       background: var(--gold);
       opacity: 0.5;
       margin-bottom: 14px;
     }
-
     .concert__meta {
       font-size: 13px;
       color: var(--ink-muted);
       letter-spacing: 0.05em;
       line-height: 1.85;
     }
-
     .concert__date {
       display: flex;
       align-items: baseline;
       gap: 8px;
       margin-bottom: 4px;
     }
-
-    .concert__date-icon {
+    .concert__date-icon,
+    .concert__venue-icon {
       font-size: 10px;
       color: var(--gold);
       flex-shrink: 0;
     }
-
+    .concert__venue-icon { margin-top: 4px; }
     .concert__venue {
       display: flex;
       align-items: flex-start;
       gap: 8px;
     }
 
-    .concert__venue-icon {
-      font-size: 10px;
-      color: var(--gold);
-      flex-shrink: 0;
-      margin-top: 4px;
-    }
-
-    /* 写真 */
     .concert__image {
       width: clamp(160px, 22vw, 240px);
       overflow: hidden;
@@ -281,10 +250,8 @@
       margin-top: 20px;
       flex-shrink: 0;
     }
-
-    .concert--odd .concert__image  { margin-right: 4px; }
+    .concert--odd  .concert__image { margin-right: 4px; }
     .concert--even .concert__image { margin-left: 4px; }
-
     .concert__image img {
       width: 100%;
       height: 100%;
@@ -293,12 +260,8 @@
       transition: transform 0.6s ease;
       aspect-ratio: 3/4;
     }
+    .concert:hover .concert__image img { transform: scale(1.04); }
 
-    .concert:hover .concert__image img {
-      transform: scale(1.04);
-    }
-
-    /* ===== Top-of-page "最新公演" badge ===== */
     .latest-badge {
       display: inline-flex;
       align-items: center;
@@ -310,75 +273,86 @@
       font-size: 11px;
       letter-spacing: 0.20em;
       color: var(--gold);
-      font-family: var(--ff-serif);
       margin-bottom: 6px;
     }
 
-    /* ===== モバイル対応 ===== */
+    /* ===== Loading / Error state ===== */
+    .timeline-message {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--ink-muted);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ===== Mobile ===== */
     @media (max-width: 680px) {
       .timeline::before { left: 20px; }
-
       .concert {
         display: block;
         padding-left: 48px;
         position: relative;
         margin-bottom: 52px;
       }
-
       .concert__center {
         position: absolute;
-        left: 14px;
-        top: 28px;
+        left: 14px; top: 28px;
         padding-top: 0;
       }
-
       .concert__content {
         max-width: 100%;
         margin: 0 !important;
         padding: 18px 20px;
       }
-
       .concert__image {
         width: 100%;
         margin: 16px 0 0 !important;
       }
-
-      .concert__image img {
-        aspect-ratio: 4/3;
-      }
-    }
-
-    /* ===== Footnote / contact ===== */
-    .page-footer-note {
-      text-align: center;
-      padding: 40px 24px 80px;
-      border-top: 1px solid var(--line);
-      max-width: 640px;
-      margin: 0 auto;
-    }
-
-    .page-footer-note a {
-      color: var(--gold);
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s;
-    }
-
-    .page-footer-note a:hover {
-      border-color: var(--gold);
-    }
-
-    .page-footer-note p {
-      font-size: 12px;
-      color: var(--ink-muted);
-      letter-spacing: 0.06em;
-      margin-bottom: 10px;
+      .concert__image img { aspect-ratio: 4/3; }
     }
   </style>
 </head>
 <body>
+
+<!-- ===== NAV ===== -->
+<nav id="main-nav" class="visible scrolled">
+  <a class="nav-logo-wrap" href="index.html">
+    <img src="images/logo_transparent.png" class="nav-logo-img" alt="ふるさと音楽会ロゴ">
+    <span class="nav-logo-text">ふるさと音楽会</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">ホーム</a></li>
+    <li><a href="index.html#about">ABOUT</a></li>
+    <li class="dropdown">
+      <a href="#">活動</a>
+      <ul class="dropdown-menu">
+        <li><a href="teiki.html">定期公演</a></li>
+        <li><a href="machikado.html">まちかどコンサート</a></li>
+        <li><a href="school.html">音楽鑑賞教室</a></li>
+        <li><a href="lesson.html">音楽教育</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#members">メンバー</a></li>
+    <li><a href="index.html#contact">お問い合わせ</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- モバイルメニュー -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html"         onclick="closeMobileMenu()">ホーム</a></li>
+    <li><a href="index.html#about"   onclick="closeMobileMenu()">ABOUT</a></li>
+    <li><a href="teiki.html"         onclick="closeMobileMenu()">定期公演</a></li>
+    <li><a href="machikado.html"     onclick="closeMobileMenu()">まちかどコンサート</a></li>
+    <li><a href="school.html"        onclick="closeMobileMenu()">音楽鑑賞教室</a></li>
+    <li><a href="lesson.html"        onclick="closeMobileMenu()">音楽教育</a></li>
+    <li><a href="index.html#members" onclick="closeMobileMenu()">メンバー</a></li>
+    <li><a href="index.html#contact" onclick="closeMobileMenu()">お問い合わせ</a></li>
+  </ul>
+</div>
 
 <!-- ===== PAGE HEADER ===== -->
 <header class="page-header">
@@ -392,30 +366,23 @@
 
 <!-- ===== TIMELINE ===== -->
 <main class="section">
-  <div class="timeline" id="concertTimeline"></div>
+  <!-- teiki.jsがDOMContentLoaded後にここへカードを挿入する -->
+  <div class="timeline" id="concertTimeline">
+    <p class="timeline-message">公演情報を読み込み中...</p>
+  </div>
 </main>
 
-<!-- ===== FOOTER NOTE ===== -->
-<div class="page-footer-note">
-  <p>お問い合わせ</p>
-  <a href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a>
-</div>
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">ふるさと音楽会</div>
+  <div class="footer-copy">
+    © 2026 ふるさと音楽会 All Rights Reserved.<br>
+    <a href="privacy.html" style="color:rgba(255,255,255,0.4);text-decoration:none;">プライバシーポリシー</a>
+  </div>
+</footer>
 
-<!-- ===== Scroll-reveal ===== -->
-<script>
-  const concerts = document.querySelectorAll('.concert');
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-
-  concerts.forEach(c => io.observe(c));
-</script>
+<!-- インラインscriptは削除（initScrollReveal はteiki.js内で呼ぶ） -->
+<script src="js/config.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/teiki.js"></script>
 </body>
