@@ -1,1 +1,672 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>音楽教育 | ふるさと音楽会</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS Variables — 共通 ===== */
+    :root {
+      --bg:         #faf8f4;
+      --bg-alt:     #f2ede4;
+      --ink:        #1c1610;
+      --ink-muted:  #5a4f42;
+      --gold:       #b89a5a;
+      --gold-light: #d4bc82;
+      --gold-pale:  #ede3cc;
+      --line:       rgba(184,154,90,0.30);
+      --ff-serif:   'Noto Serif JP', 'YuMincho', serif;
+      --ff-latin:   'Cormorant Garamond', 'Georgia', serif;
+      --ease:       cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff-serif);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+
+    /* ===== Page Header（共通）===== */
+    .page-header {
+      position: relative;
+      padding: 80px 24px 64px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(184,154,90,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header__deco {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--ff-latin);
+      font-size: clamp(60px, 16vw, 180px);
+      font-style: italic;
+      font-weight: 300;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,154,90,0.10);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+    .page-header__label {
+      font-family: var(--ff-latin);
+      font-size: 11px;
+      letter-spacing: 0.30em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .page-header__title {
+      font-size: clamp(26px, 5vw, 46px);
+      font-weight: 300;
+      letter-spacing: 0.20em;
+      line-height: 1.4;
+      position: relative;
+      color: var(--ink);
+    }
+    .page-header__rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 24px auto 0;
+      width: fit-content;
+      position: relative;
+    }
+    .page-header__rule::before,
+    .page-header__rule::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+    .page-header__rule-icon {
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* ===== Hero Image ===== */
+    .hero {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto 64px;
+      padding: 0 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+    .hero.visible { opacity: 1; transform: translateY(0); }
+
+    .hero__inner {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      box-shadow: 0 8px 48px rgba(28,22,16,0.10);
+    }
+    .hero__inner img {
+      width: 100%;
+      aspect-ratio: 980 / 352;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s var(--ease);
+    }
+    .hero__inner:hover img { transform: scale(1.03); }
+
+    /* 画像上のゴールドグラデオーバーレイ */
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 55%,
+        rgba(28,22,16,0.35) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* ===== Section wrapper ===== */
+    .section {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ===== Divider（共通）===== */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+    .section-divider__icon {
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ===== Intro Block ===== */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 60px;
+      align-items: start;
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+    }
+    .intro.visible { opacity: 1; transform: translateY(0); }
+
+    .intro__heading-col {
+      border-right: 1px solid var(--line);
+      padding-right: 60px;
+      padding-top: 4px;
+    }
+    .intro__label {
+      font-family: var(--ff-latin);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .intro__title {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+    .intro__accent-line {
+      width: 32px;
+      height: 2px;
+      background: var(--gold);
+      opacity: 0.7;
+    }
+
+    .intro__body-col {}
+    .intro__body {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink-muted);
+      letter-spacing: 0.06em;
+      line-height: 2.2;
+    }
+    .intro__body p + p { margin-top: 1.2em; }
+
+    /* ===== Lesson Types ===== */
+    .lessons {
+      margin-bottom: 96px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s var(--ease) 0.1s, transform 0.75s var(--ease) 0.1s;
+    }
+    .lessons.visible { opacity: 1; transform: translateY(0); }
+
+    .lessons__heading {
+      font-family: var(--ff-latin);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .lessons__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .lesson-card {
+      background: white;
+      border: 1px solid rgba(184,154,90,0.18);
+      border-radius: 2px;
+      padding: 28px 20px 24px;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(28,22,16,0.04);
+      transition: box-shadow 0.35s var(--ease), transform 0.35s var(--ease);
+    }
+    .lesson-card:hover {
+      box-shadow: 0 6px 28px rgba(28,22,16,0.09);
+      transform: translateY(-3px);
+    }
+
+    .lesson-card__icon {
+      font-size: 22px;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    .lesson-card__name {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .lesson-card__desc {
+      font-size: 11.5px;
+      font-weight: 300;
+      color: var(--ink-muted);
+      letter-spacing: 0.04em;
+      line-height: 1.85;
+    }
+
+    /* ===== Contact Form ===== */
+    .contact-block {
+      margin-bottom: 100px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s var(--ease) 0.15s, transform 0.75s var(--ease) 0.15s;
+    }
+    .contact-block.visible { opacity: 1; transform: translateY(0); }
+
+    .contact-block__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .contact-block__label {
+      font-family: var(--ff-latin);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .contact-block__title {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .contact-block__note {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--ink-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* フォーム本体 */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field label {
+      font-size: 11px;
+      letter-spacing: 0.20em;
+      color: var(--ink-muted);
+      font-family: var(--ff-latin);
+      text-transform: uppercase;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      background: white;
+      border: 1px solid rgba(184,154,90,0.30);
+      border-radius: 2px;
+      padding: 12px 14px;
+      font-family: var(--ff-serif);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      resize: none;
+      width: 100%;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: rgba(90,79,66,0.35);
+      font-size: 13px;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,154,90,0.10);
+    }
+
+    .form-field textarea { height: 140px; }
+
+    /* 送信ボタン */
+    .btn-submit {
+      align-self: center;
+      margin-top: 8px;
+      padding: 14px 52px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      font-family: var(--ff-latin);
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s var(--ease);
+      z-index: 0;
+    }
+    .btn-submit:hover::before { transform: scaleX(1); }
+    .btn-submit:hover { color: white; box-shadow: 0 4px 20px rgba(184,154,90,0.25); }
+    .btn-submit span { position: relative; z-index: 1; }
+
+    /* 送信完了メッセージ */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 32px;
+      border: 1px solid rgba(184,154,90,0.30);
+      border-radius: 2px;
+      background: white;
+    }
+    .form-success.show { display: block; }
+    .form-success__icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .form-success__text {
+      font-size: 15px;
+      font-weight: 300;
+      letter-spacing: 0.10em;
+      color: var(--ink-muted);
+    }
+
+    /* メールリンク */
+    .mail-link-wrap {
+      text-align: center;
+      margin-top: 28px;
+    }
+    .mail-link-wrap p {
+      font-size: 12px;
+      color: var(--ink-muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .mail-link {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .mail-link:hover { border-color: var(--gold); }
+
+    /* ===== Footer note ===== */
+    .page-footer-note {
+      text-align: center;
+      padding: 40px 24px 80px;
+      border-top: 1px solid var(--line);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .page-footer-note p {
+      font-size: 12px;
+      color: var(--ink-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+    .page-footer-note a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .page-footer-note a:hover { border-color: var(--gold); }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 680px) {
+      .intro {
+        grid-template-columns: 1fr;
+        gap: 32px 0;
+      }
+      .intro__heading-col {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+        padding-right: 0;
+        padding-bottom: 32px;
+      }
+      .lessons__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .lessons__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== PAGE HEADER ===== -->
+<header class="page-header">
+  <div class="page-header__deco">Education</div>
+  <p class="page-header__label">Music Education</p>
+  <h1 class="page-header__title">音楽教育</h1>
+  <div class="page-header__rule">
+    <div class="page-header__rule-icon"></div>
+  </div>
+</header>
+
+<!-- ===== HERO IMAGE ===== -->
+<div class="hero" id="hero">
+  <div class="hero__inner">
+    <img
+      src="https://static.wixstatic.com/media/11a6b4_f8c2e2a9c5874cbbb82f956b3a95f670~mv2.jpg/v1/fill/w_980,h_352,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_3476_JPG.jpg"
+      alt="音楽教育 ふるさと音楽会"
+    />
+    <div class="hero__overlay"></div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="section">
+
+  <div class="section-divider"><div class="section-divider__icon"></div></div>
+
+  <!-- INTRO -->
+  <div class="intro" id="intro">
+    <div class="intro__heading-col">
+      <p class="intro__label">Our Mission</p>
+      <h2 class="intro__title">音楽文化の発展と<br>後進の育成</h2>
+      <div class="intro__accent-line"></div>
+    </div>
+    <div class="intro__body-col">
+      <div class="intro__body">
+        <p>ふるさと音楽会は山口県の音楽文化の発展や、後進の育成にも力を入れています。</p>
+        <p>ご希望に合わせて、初心者講習会や経験豊富なメンバーによる合奏レッスン、アンサンブルレッスン、個人レッスン等、様々な形態でのレクチャーをふるさと音楽会メンバーが行います。</p>
+        <p>もし興味がございましたら、お問い合わせよりご連絡ください。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSON TYPES -->
+  <div class="lessons" id="lessons">
+    <p class="lessons__heading">Lesson Types</p>
+    <div class="lessons__grid">
+      <div class="lesson-card">
+        <div class="lesson-card__icon">🎻</div>
+        <p class="lesson-card__name">初心者講習会</p>
+        <p class="lesson-card__desc">楽器を始めたばかりの方向けの基礎から学べる講習会</p>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-card__icon">🎶</div>
+        <p class="lesson-card__name">合奏レッスン</p>
+        <p class="lesson-card__desc">経験豊富なメンバーが指導するアンサンブル形式のレッスン</p>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-card__icon">🎼</div>
+        <p class="lesson-card__name">アンサンブル<br>レッスン</p>
+        <p class="lesson-card__desc">少人数での室内楽・アンサンブルを丁寧に指導</p>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-card__icon">🎵</div>
+        <p class="lesson-card__name">個人レッスン</p>
+        <p class="lesson-card__desc">お一人おひとりのペースやレベルに合わせたマンツーマン指導</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <div class="contact-block" id="contact-block">
+    <div class="contact-block__header">
+      <p class="contact-block__label">Contact</p>
+      <h2 class="contact-block__title">お問い合わせ</h2>
+      <p class="contact-block__note">レッスンについてのご質問・ご相談はこちらからどうぞ。</p>
+    </div>
+
+    <form class="contact-form" id="contact-form" novalidate>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="last-name">姓</label>
+          <input type="text" id="last-name" name="lastName" placeholder="山田" />
+        </div>
+        <div class="form-field">
+          <label for="first-name">名</label>
+          <input type="text" id="first-name" name="firstName" placeholder="太郎" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" name="email" placeholder="example@mail.com" />
+      </div>
+      <div class="form-field">
+        <label for="message">メッセージ</label>
+        <textarea id="message" name="message" placeholder="ご質問・ご相談の内容をご記入ください。"></textarea>
+      </div>
+      <button type="submit" class="btn-submit"><span>送信する</span></button>
+    </form>
+
+    <!-- 送信完了 -->
+    <div class="form-success" id="form-success">
+      <div class="form-success__icon">✦</div>
+      <p class="form-success__text">ありがとうございます。<br>メッセージを受け付けました。</p>
+    </div>
+
+    <div class="mail-link-wrap">
+      <p>または直接メールでのお問い合わせ</p>
+      <a class="mail-link" href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a>
+    </div>
+  </div>
+
+</div><!-- /.section -->
+
+<!-- ===== FOOTER NOTE ===== -->
+<div class="page-footer-note">
+  <p>お問い合わせ</p>
+  <a href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a>
+</div>
+
+<script>
+  /* ===== Scroll Reveal ===== */
+  const revealTargets = document.querySelectorAll('#hero, #intro, #lessons, #contact-block');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  revealTargets.forEach(el => io.observe(el));
+
+  /* ===== Form submit (フロントのみ) ===== */
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form    = document.getElementById('contact-form');
+    const success = document.getElementById('form-success');
+
+    /* 簡易バリデーション */
+    const email = form.email.value.trim();
+    const msg   = form.message.value.trim();
+    if (!email || !msg) {
+      /* 未入力フィールドを強調 */
+      [form.email, form.message].forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = 'rgba(184,90,90,0.6)';
+          field.addEventListener('input', () => {
+            field.style.borderColor = '';
+          }, { once: true });
+        }
+      });
+      return;
+    }
+
+    form.style.display = 'none';
+    success.classList.add('show');
+
+    /* 実際の送信先は mailto or バックエンドに差し替えてください */
+  });
+</script>
+
+</body>
+</html>
