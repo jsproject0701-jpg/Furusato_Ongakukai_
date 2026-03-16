@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 
   <style>
-    /* ===== CSS Variables — 共通 ===== */
     :root {
       --bg:         #faf8f4;
       --bg-alt:     #f2ede4;
@@ -27,7 +27,6 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--ff-serif);
       background: var(--bg);
@@ -36,10 +35,22 @@
       overflow-x: hidden;
     }
 
-    /* ===== Page Header（共通）===== */
+    /* ===== Nav（サブページ用：常時表示） ===== */
+    #main-nav {
+      transform: translateY(0) !important;
+      background: rgba(255,255,255,0.97) !important;
+      border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08) !important;
+    }
+    #main-nav .nav-logo-text  { color: var(--primary) !important; }
+    #main-nav .nav-links a    { color: var(--text) !important; }
+    #main-nav .nav-links a:hover { color: var(--accent) !important; }
+    #main-nav .hamburger span { background: var(--primary) !important; }
+
+    /* ===== Page Header ===== */
     .page-header {
       position: relative;
-      padding: 80px 24px 64px;
+      padding: calc(68px + 40px) 24px 64px;
       text-align: center;
       overflow: hidden;
     }
@@ -52,8 +63,7 @@
     }
     .page-header__deco {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--ff-latin);
       font-size: clamp(60px, 14vw, 160px);
@@ -90,7 +100,6 @@
       gap: 12px;
       margin: 24px auto 0;
       width: fit-content;
-      position: relative;
     }
     .page-header__rule::before,
     .page-header__rule::after {
@@ -102,8 +111,7 @@
       opacity: 0.6;
     }
     .page-header__rule-icon {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border: 1px solid var(--gold);
       transform: rotate(45deg);
     }
@@ -115,7 +123,6 @@
       padding: 0 24px 100px;
     }
 
-    /* ===== Divider（共通）===== */
     .section-divider {
       display: flex;
       align-items: center;
@@ -130,8 +137,7 @@
       background: var(--line);
     }
     .section-divider__icon {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border: 1px solid var(--gold);
       transform: rotate(45deg);
       flex-shrink: 0;
@@ -147,14 +153,13 @@
       margin-bottom: 56px;
       padding-bottom: 40px;
       border-bottom: 1px solid var(--line);
-
       opacity: 0;
       transform: translateY(16px);
       transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
     }
     .intro-text.visible { opacity: 1; transform: translateY(0); }
 
-    /* ===== Article Section ===== */
+    /* ===== Article ===== */
     .policy-article {
       opacity: 0;
       transform: translateY(20px);
@@ -162,20 +167,15 @@
     }
     .policy-article.visible { opacity: 1; transform: translateY(0); }
 
-    /* 各セクション間のスペース */
-    .policy-section {
-      margin-bottom: 48px;
-    }
+    .policy-section { margin-bottom: 48px; }
     .policy-section:last-child { margin-bottom: 0; }
 
-    /* セクション番号＋見出し */
     .policy-section__heading {
       display: flex;
       align-items: baseline;
       gap: 16px;
       margin-bottom: 18px;
     }
-
     .policy-section__num {
       font-family: var(--ff-latin);
       font-size: 11px;
@@ -184,7 +184,6 @@
       flex-shrink: 0;
       padding-top: 2px;
     }
-
     .policy-section__title {
       font-size: 16px;
       font-weight: 400;
@@ -192,18 +191,13 @@
       color: var(--ink);
       line-height: 1.5;
     }
-
-    /* 見出し下のアクセントライン */
     .policy-section__accent {
-      width: 24px;
-      height: 1px;
+      width: 24px; height: 1px;
       background: var(--gold);
       opacity: 0.55;
       margin-bottom: 16px;
       margin-left: 44px;
     }
-
-    /* 本文 */
     .policy-section__body {
       font-size: 14px;
       font-weight: 300;
@@ -212,8 +206,6 @@
       line-height: 2.15;
       padding-left: 44px;
     }
-
-    /* リスト */
     .policy-section__list {
       list-style: none;
       padding: 0;
@@ -235,16 +227,13 @@
     .policy-section__list li::before {
       content: '';
       display: inline-block;
-      width: 4px;
-      height: 4px;
+      width: 4px; height: 4px;
       border: 1px solid var(--gold);
       transform: rotate(45deg);
       flex-shrink: 0;
       margin-top: 2px;
       opacity: 0.8;
     }
-
-    /* セクション間の区切り線 */
     .policy-section + .policy-section {
       padding-top: 40px;
       border-top: 1px solid var(--line);
@@ -258,13 +247,11 @@
       border: 1px solid rgba(184,154,90,0.20);
       border-radius: 2px;
       box-shadow: 0 2px 20px rgba(28,22,16,0.04);
-
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.7s var(--ease) 0.1s, transform 0.7s var(--ease) 0.1s;
     }
     .contact-block.visible { opacity: 1; transform: translateY(0); }
-
     .contact-block__label {
       font-family: var(--ff-latin);
       font-size: 11px;
@@ -273,7 +260,6 @@
       color: var(--gold);
       margin-bottom: 10px;
     }
-
     .contact-block__org {
       font-size: 15px;
       font-weight: 400;
@@ -281,15 +267,12 @@
       color: var(--ink);
       margin-bottom: 8px;
     }
-
     .contact-block__divider {
-      width: 24px;
-      height: 1px;
+      width: 24px; height: 1px;
       background: var(--gold);
       opacity: 0.5;
       margin: 12px 0;
     }
-
     .contact-block__email {
       font-size: 13px;
       font-weight: 300;
@@ -299,16 +282,13 @@
       align-items: center;
       gap: 10px;
     }
-
     .contact-block__email-icon {
-      width: 4px;
-      height: 4px;
+      width: 4px; height: 4px;
       border: 1px solid var(--gold);
       transform: rotate(45deg);
       opacity: 0.8;
       flex-shrink: 0;
     }
-
     .contact-block a {
       color: var(--gold);
       text-decoration: none;
@@ -317,33 +297,67 @@
     }
     .contact-block a:hover { border-color: var(--gold); }
 
-    /* ===== Footer note ===== */
-    .page-footer-note {
-      text-align: center;
-      padding: 40px 24px 80px;
-      border-top: 1px solid var(--line);
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    .page-footer-note p {
+    /* ===== 制定日 ===== */
+    .policy-date {
+      text-align: right;
       font-size: 12px;
       color: var(--ink-muted);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
     }
 
     /* ===== Mobile ===== */
     @media (max-width: 600px) {
       .policy-section__body,
-      .policy-section__list {
-        padding-left: 0;
-        margin-left: 0;
-      }
+      .policy-section__list { padding-left: 0; margin-left: 0; }
       .policy-section__accent { margin-left: 0; }
       .contact-block { padding: 24px 20px; }
     }
   </style>
 </head>
 <body>
+
+<!-- ===== NAV ===== -->
+<nav id="main-nav" class="visible scrolled">
+  <a class="nav-logo-wrap" href="index.html">
+    <img src="images/logo_transparent.png" class="nav-logo-img" alt="ふるさと音楽会ロゴ">
+    <span class="nav-logo-text">ふるさと音楽会</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">ホーム</a></li>
+    <li><a href="index.html#about">ABOUT</a></li>
+    <li class="dropdown">
+      <a href="#">活動</a>
+      <ul class="dropdown-menu">
+        <li><a href="teiki.html">定期公演</a></li>
+        <li><a href="machikado.html">まちかどコンサート</a></li>
+        <li><a href="school.html">音楽鑑賞教室</a></li>
+        <li><a href="lesson.html">音楽教育</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#members">メンバー</a></li>
+    <li><a href="index.html#contact">お問い合わせ</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- モバイルメニュー -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html"         onclick="closeMobileMenu()">ホーム</a></li>
+    <li><a href="index.html#about"   onclick="closeMobileMenu()">ABOUT</a></li>
+    <li><a href="teiki.html"         onclick="closeMobileMenu()">定期公演</a></li>
+    <li><a href="machikado.html"     onclick="closeMobileMenu()">まちかどコンサート</a></li>
+    <li><a href="school.html"        onclick="closeMobileMenu()">音楽鑑賞教室</a></li>
+    <li><a href="lesson.html"        onclick="closeMobileMenu()">音楽教育</a></li>
+    <li><a href="index.html#members" onclick="closeMobileMenu()">メンバー</a></li>
+    <li><a href="index.html#contact" onclick="closeMobileMenu()">お問い合わせ</a></li>
+  </ul>
+</div>
 
 <!-- ===== PAGE HEADER ===== -->
 <header class="page-header">
@@ -360,23 +374,36 @@
 
   <div class="section-divider"><div class="section-divider__icon"></div></div>
 
-  <!-- イントロ -->
   <p class="intro-text" id="intro">
     ふるさと音楽会（以下「当団体」）は、本ウェブサイトにおいて取得する個人情報の取り扱いについて、以下の通りプライバシーポリシーを定めます。
   </p>
 
-  <!-- ポリシー本文 -->
   <article class="policy-article" id="policy">
 
-    <!-- 1. 個人情報の利用目的 -->
     <div class="policy-section">
       <div class="policy-section__heading">
         <span class="policy-section__num">01</span>
+        <h2 class="policy-section__title">個人情報の取得</h2>
+      </div>
+      <div class="policy-section__accent"></div>
+      <p class="policy-section__body">
+        当サイトでは、お問い合わせフォームを通じて以下の個人情報を取得することがあります。
+      </p>
+      <ul class="policy-section__list">
+        <li>氏名（姓・名）</li>
+        <li>メールアドレス</li>
+        <li>お問い合わせ内容</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <div class="policy-section__heading">
+        <span class="policy-section__num">02</span>
         <h2 class="policy-section__title">個人情報の利用目的</h2>
       </div>
       <div class="policy-section__accent"></div>
       <p class="policy-section__body">
-        お問い合わせなどで取得した個人情報は、以下の目的のために利用します。
+        取得した個人情報は、以下の目的のために利用します。
       </p>
       <ul class="policy-section__list">
         <li>お問い合わせへの回答</li>
@@ -385,10 +412,9 @@
       </ul>
     </div>
 
-    <!-- 2. 個人情報の第三者提供 -->
     <div class="policy-section">
       <div class="policy-section__heading">
-        <span class="policy-section__num">02</span>
+        <span class="policy-section__num">03</span>
         <h2 class="policy-section__title">個人情報の第三者提供</h2>
       </div>
       <div class="policy-section__accent"></div>
@@ -397,33 +423,42 @@
       </p>
     </div>
 
-    <!-- 3. アクセス解析について -->
     <div class="policy-section">
       <div class="policy-section__heading">
-        <span class="policy-section__num">03</span>
+        <span class="policy-section__num">04</span>
         <h2 class="policy-section__title">アクセス解析について</h2>
       </div>
       <div class="policy-section__accent"></div>
       <p class="policy-section__body">
-        当サイトでは、サービス向上のためアクセス解析ツールを利用する場合があります。これにより Cookie を利用して匿名のトラフィックデータを収集することがあります。
+        当サイトでは、サービス向上のためGoogle Analyticsを利用する場合があります。Google Analyticsは、Cookieを使用して匿名のトラフィックデータを収集します。収集されるデータはGoogleのプライバシーポリシーに基づき管理されます。Cookieの使用を無効にすることで、データ収集を拒否することができます。
       </p>
     </div>
 
-    <!-- 4. 外部サービスについて -->
     <div class="policy-section">
       <div class="policy-section__heading">
-        <span class="policy-section__num">04</span>
+        <span class="policy-section__num">05</span>
         <h2 class="policy-section__title">外部サービスについて</h2>
       </div>
       <div class="policy-section__accent"></div>
       <p class="policy-section__body">
-        当サイトでは以下の外部サービスを利用する場合があります。
+        当サイトでは以下の外部サービスを利用しています。各サービスのプライバシーポリシーについては、各社のウェブサイトをご確認ください。
       </p>
       <ul class="policy-section__list">
-        <li>Instagram</li>
-        <li>YouTube</li>
-        <li>Google サービス</li>
+        <li>Instagram（Meta Platforms, Inc.）</li>
+        <li>YouTube（Google LLC）</li>
+        <li>Google サービス（Google Analytics 等）</li>
       </ul>
+    </div>
+
+    <div class="policy-section">
+      <div class="policy-section__heading">
+        <span class="policy-section__num">06</span>
+        <h2 class="policy-section__title">個人情報の開示・訂正・削除</h2>
+      </div>
+      <div class="policy-section__accent"></div>
+      <p class="policy-section__body">
+        ご本人から個人情報の開示・訂正・削除のご要望があった場合は、本人確認のうえ、合理的な範囲で速やかに対応いたします。下記お問い合わせ先までご連絡ください。
+      </p>
     </div>
 
     <!-- お問い合わせカード -->
@@ -433,20 +468,38 @@
       <div class="contact-block__divider"></div>
       <div class="contact-block__email">
         <span class="contact-block__email-icon"></span>
-        <span>Email：<a href="mailto:furusato.ongakukai.2018@gmail.com">furusato.ongakukai.2018@gmail.com</a></span>
+        <span>Email：<a id="privacyMailLink" href="#">読み込み中...</a></span>
       </div>
     </div>
+
+    <!-- 制定日 -->
+    <p class="policy-date">制定日：2026年3月16日</p>
 
   </article>
 
 </main>
 
-<!-- ===== FOOTER NOTE ===== -->
-<div class="page-footer-note">
-  <p>©2026 ふるさと音楽会</p>
-</div>
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">ふるさと音楽会</div>
+  <div class="footer-copy">
+    © 2026 ふるさと音楽会 All Rights Reserved.
+  </div>
+</footer>
 
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
 <script>
+  // メールリンクをconfig.jsから設定
+  window.addEventListener("DOMContentLoaded", () => {
+    if (typeof SITE_CONFIG !== "undefined" && SITE_CONFIG.email) {
+      const el = document.getElementById("privacyMailLink");
+      el.href        = "mailto:" + SITE_CONFIG.email;
+      el.textContent = SITE_CONFIG.email;
+    }
+  });
+
+  // Scroll Reveal
   const targets = document.querySelectorAll('#intro, #policy, #contact-block');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
