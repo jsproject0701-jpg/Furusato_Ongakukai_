@@ -1,42 +1,93 @@
-
 // ============ MEMBERS DATA ============
+// 初期データ：GASスプレッドシートから上書きされる（cms.js）
+// GAS読み込み失敗時のフォールバックとして、実名データのみ残す
 const membersData = [
-  { name:"奥田 奏至", instrument:"flute", hometown:"周南市", profile:"須々万中学校・新南陽高等学校・徳島文理大学・エリザベト音楽大学在学中", img:"" },
-  { name:"澤井 波音", instrument:"flute", hometown:"防府市", profile:"国府中学校・防府西高等学校・エリザベト音楽大学在学中", img:"" },
-  { name:"渡部 真菜", instrument:"flute", hometown:"防府市", profile:"国府中学校・岡山県明成学院高等学校・国立音楽大学卒", img:"" },
-  { name:"貞賴 惠", instrument:"oboe", hometown:"山口県", profile:"", img:"" },
-  { name:"（メンバー）", instrument:"clarinet", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
-  { name:"（メンバー）", instrument:"saxophone", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
-  { name:"（メンバー）", instrument:"horn", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
-  { name:"（メンバー）", instrument:"trumpet", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
-  { name:"（メンバー）", instrument:"trombone", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
-  { name:"（メンバー）", instrument:"tuba", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
-  { name:"（メンバー）", instrument:"percussion", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
-  { name:"（メンバー）", instrument:"piano", hometown:"", profile:"情報はスプレッドシートから読み込まれます", img:"" },
+  { name:"奥田 奏至", instrument:"flute",  hometown:"周南市", profile:"須々万中学校・新南陽高等学校・徳島文理大学・エリザベト音楽大学在学中", img:"" },
+  { name:"澤井 波音", instrument:"flute",  hometown:"防府市", profile:"国府中学校・防府西高等学校・エリザベト音楽大学在学中",               img:"" },
+  { name:"渡部 真菜", instrument:"flute",  hometown:"防府市", profile:"国府中学校・岡山県明成学院高等学校・国立音楽大学卒",                 img:"" },
+  { name:"貞賴 惠",   instrument:"oboe",   hometown:"山口県", profile:"",                                                                   img:"" },
 ];
 
 const instLabel = {
-  flute:"Flute", oboe:"Oboe", clarinet:"Clarinet",
-  saxophone:"Saxophone", horn:"Horn", trumpet:"Trumpet",
-  trombone:"Trombone", tuba:"Tuba", percussion:"Percussion",
-  piano:"Piano", strings:"Strings"
+  flute:      "Flute",
+  oboe:       "Oboe",
+  clarinet:   "Clarinet",
+  saxophone:  "Saxophone",
+  horn:       "Horn",
+  trumpet:    "Trumpet",
+  trombone:   "Trombone",
+  tuba:       "Tuba",
+  percussion: "Percussion",
+  piano:      "Piano",
+  strings:    "Strings"
 };
+
+// XSS対策：テキストを安全にDOM挿入するヘルパー
+function setTextContent(el, text) {
+  el.textContent = typeof text === "string" ? text : "";
+}
 
 function renderMembers(filter) {
   const grid = document.getElementById('membersGrid');
-  const data = filter === 'all' ? membersData : membersData.filter(m => m.instrument === filter);
-  grid.innerHTML = data.map(m => `
-    <div class="member-card">
-      <div class="member-photo-wrap">
-        ${m.img ? `<img class="member-photo" src="${m.img}" alt="${m.name}" loading="lazy">` : ''}
-      </div>
-      <div class="member-instrument">${instLabel[m.instrument] || m.instrument}</div>
-      <div class="member-name">${m.name}</div>
-      ${m.hometown ? `<div class="member-bio">${m.hometown}出身</div>` : ''}
-      <div class="member-bio">${m.profile}</div>
-    </div>
-  `).join('');
+  if (!grid) return;
+
+  const data = filter === 'all'
+    ? membersData
+    : membersData.filter(m => m.instrument === filter);
+
+  // データが空の場合
+  if (!data.length) {
+    grid.innerHTML = '<p style="text-align:center;color:var(--text-light);">該当するメンバーがいません</p>';
+    return;
+  }
+
+  // innerHTML を避け、DOM操作でカードを生成（XSS対策）
+  grid.innerHTML = "";
+  data.forEach(m => {
+    const card = document.createElement("div");
+    card.className = "member-card";
+
+    const photoWrap = document.createElement("div");
+    photoWrap.className = "member-photo-wrap";
+    if (m.img) {
+      const img = document.createElement("img");
+      img.className   = "member-photo";
+      img.src         = m.img;
+      img.alt         = m.name;
+      img.loading     = "lazy";
+      photoWrap.appendChild(img);
+    }
+
+    const instrEl = document.createElement("div");
+    instrEl.className = "member-instrument";
+    setTextContent(instrEl, instLabel[m.instrument] || m.instrument);
+
+    const nameEl = document.createElement("div");
+    nameEl.className = "member-name";
+    setTextContent(nameEl, m.name);
+
+    card.appendChild(photoWrap);
+    card.appendChild(instrEl);
+    card.appendChild(nameEl);
+
+    if (m.hometown) {
+      const hometownEl = document.createElement("div");
+      hometownEl.className = "member-bio";
+      setTextContent(hometownEl, m.hometown + "出身");
+      card.appendChild(hometownEl);
+    }
+
+    if (m.profile) {
+      const profileEl = document.createElement("div");
+      profileEl.className = "member-bio";
+      setTextContent(profileEl, m.profile);
+      card.appendChild(profileEl);
+    }
+
+    grid.appendChild(card);
+  });
 }
+
 renderMembers('all');
 
 function filterMembers(filter, btn) {
