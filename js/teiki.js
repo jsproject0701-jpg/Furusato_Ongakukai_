@@ -2,20 +2,31 @@ const CMS_URL = "https://script.google.com/macros/s/AKfycbxLP3JZpcW7ON7ay5QO2tzo
 
 async function loadConcerts() {
 
-  const res = await fetch(CMS_URL);
-  const data = await res.json();
+  try {
 
-  const timeline = document.getElementById("concertTimeline");
+    const res = await fetch(CMS_URL);
+    const data = await res.json();
 
-  const concerts = data.concerts
-    .map(c => ({
-      title: c[0],
-      date: new Date(c[1]),
-      venue: c[2],
-      time: c[3],
-      image: c[4]
-    }))
-    .sort((a,b)=> b.date - a.date);
+    console.log("CMS DATA:", data);  // ←追加
+
+    const timeline = document.getElementById("concertTimeline");
+
+    if(!timeline){
+      console.error("timeline element not found");
+      return;
+    }
+
+    const concerts = data.concerts
+      .map(c => ({
+        title: c[0],
+        date: new Date(c[1]),
+        venue: c[2],
+        time: c[3],
+        image: c[4]
+      }))
+      .sort((a,b)=> b.date - a.date);
+
+    console.log("concerts:", concerts); // ←追加
 
   timeline.innerHTML = concerts.map((c,i)=>{
 
