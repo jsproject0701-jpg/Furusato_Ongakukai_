@@ -9,16 +9,22 @@
 
 <meta name="description" content="ふるさと音楽会は山口県出身の若手音楽家が集まり、2017年に結成した音楽団体です。室内楽・吹奏楽・ジャズなど幅広い公演を県内各地で開催しています。">
 
+<!-- ドメイン取得後に furusato-ongakukai.com を実際のドメインへ差し替え -->
 <link rel="canonical" href="https://furusato-ongakukai.com">
 
 <meta property="og:title" content="ふるさと音楽会 | 山口県出身アーティストによる音楽会">
 <meta property="og:description" content="山口県出身の若手音楽家による音楽会。室内楽・吹奏楽・ジャズを通じて山口の音楽文化を発信しています。">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://furusato-ongakukai.com/images/ogp.svg">
+<!-- OGP画像はJPEGかPNGを推奨。ドメイン取得後にURLを差し替え -->
+<meta property="og:image" content="https://furusato-ongakukai.com/images/ogp.png">
 <meta property="og:url" content="https://furusato-ongakukai.com">
 <meta property="og:site_name" content="ふるさと音楽会">
-<meta name="google-site-verification" content="xxxxx">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXX"></script>
+
+<!-- Google Search Console認証コード：取得後に差し替え -->
+<!-- <meta name="google-site-verification" content="実際の認証コード"> -->
+
+<!-- Google Analytics：計測ID取得後に差し替え -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-実際のID"></script> -->
 
 <link rel="icon" href="favicon.ico">
 
@@ -80,40 +86,34 @@
     <span class="nav-logo-text">ふるさと音楽会</span>
   </a>
   <ul class="nav-links">
-
-  <li><a href="#home">ホーム</a></li>
-
-  <li><a href="#about">ABOUT</a></li>
-
-  <li class="dropdown">
-
-    <a href="#">活動</a>
-
-    <ul class="dropdown-menu">
-      <li><a href="teiki.html">定期公演</a></li>
-      <li><a href="machikado.html">まちかどコンサート</a></li>
-      <li><a href="school.html">音楽鑑賞教室</a></li>
-      <li><a href="lesson.html">音楽教育</a></li>
-    </ul>
-
-  </li>
-
-  <li><a href="#members">メンバー</a></li>
-
-  <li><a href="#contact">お問い合わせ</a></li>
-
-</ul>
+    <li><a href="#home">ホーム</a></li>
+    <li><a href="#about">ABOUT</a></li>
+    <li class="dropdown">
+      <a href="#">活動</a>
+      <ul class="dropdown-menu">
+        <li><a href="teiki.html">定期公演</a></li>
+        <li><a href="machikado.html">まちかどコンサート</a></li>
+        <li><a href="school.html">音楽鑑賞教室</a></li>
+        <li><a href="lesson.html">音楽教育</a></li>
+      </ul>
+    </li>
+    <li><a href="#members">メンバー</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
   <button class="hamburger" id="hamburger" aria-label="メニュー">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- モバイルメニュー（ナビの外に配置） -->
+<!-- モバイルメニュー：PCナビのドロップダウンと同じリンクを網羅 -->
 <div class="mobile-menu" id="mobileMenu">
   <ul>
     <li><a href="#home" onclick="closeMobileMenu()">ホーム</a></li>
     <li><a href="#about" onclick="closeMobileMenu()">ABOUT</a></li>
-    <li><a href="#concerts" onclick="closeMobileMenu()">定期公演</a></li>
+    <li><a href="teiki.html" onclick="closeMobileMenu()">定期公演</a></li>
+    <li><a href="machikado.html" onclick="closeMobileMenu()">まちかどコンサート</a></li>
+    <li><a href="school.html" onclick="closeMobileMenu()">音楽鑑賞教室</a></li>
+    <li><a href="lesson.html" onclick="closeMobileMenu()">音楽教育</a></li>
     <li><a href="#members" onclick="closeMobileMenu()">メンバー</a></li>
     <li><a href="#contact" onclick="closeMobileMenu()">お問い合わせ</a></li>
   </ul>
@@ -121,6 +121,7 @@
 
 <!-- ============ HOME ============ -->
 <section id="home">
+
   <div class="hero-carousel" id="heroCarousel"></div>
 
   <!-- ============ ABOUT ============ -->
@@ -132,19 +133,19 @@
     <div class="activities-grid">
       <a href="teiki.html" class="activity-card activity-concert">
         <div class="activity-name">定期公演</div>
-        <div class="activity-desc">...</div>
+        <div class="activity-desc">山口県内各地で毎年開催する本格的なクラシック・吹奏楽コンサート</div>
       </a>
       <a href="machikado.html" class="activity-card activity-street">
         <div class="activity-name">まちかどコンサート</div>
-        <div class="activity-desc">...</div>
+        <div class="activity-desc">ショッピングモールや駅前広場など、身近な場所で行う無料の演奏会</div>
       </a>
       <a href="school.html" class="activity-card activity-school">
         <div class="activity-name">音楽鑑賞教室</div>
-        <div class="activity-desc">...</div>
+        <div class="activity-desc">県内の小中学校を訪問し、子どもたちに生の音楽を届ける出前コンサート</div>
       </a>
       <a href="lesson.html" class="activity-card activity-lesson">
         <div class="activity-name">音楽教育・レッスン</div>
-        <div class="activity-desc">...</div>
+        <div class="activity-desc">プロの演奏家によるマンツーマンレッスン。初心者から上級者まで対応</div>
       </a>
     </div>
 
@@ -180,14 +181,8 @@
       </div>
       <div class="next-info">
         <span class="next-badge">NEXT CONCERT</span>
-        <div class="next-concert-title" id="concertTitle">
-          第◯回 ふるさと音楽会 定期演奏会
-        </div>
-        <div class="next-concert-venue" id="concertInfo">
-          📍 会場：◯◯市文化センター 大ホール<br>
-          🕐 開演：18:00（開場 17:30）<br>
-          🎟 入場無料
-        </div>
+        <div class="next-concert-title" id="concertTitle">日程調整中</div>
+        <div class="next-concert-venue" id="concertInfo">詳細が決まり次第お知らせします</div>
       </div>
     </div>
 
@@ -197,8 +192,8 @@
     </div>
 
     <div style="margin-top:3rem; max-width:800px; margin-left:auto; margin-right:auto;">
-      <h3 style="font-family:'Noto Serif JP',serif; font-size:1.1rem; font-weight:400; letter-spacing:0.1em; margin-bottom:1.5rem; color:var(--primary);">過去の主な公演実績</h3>
-      <div id="concertHistory" style="display:grid;gap:0.6rem;"></div>
+      <h3 class="history-heading">過去の主な公演実績</h3>
+      <div id="concertHistory"></div>
     </div>
 
     <div id="concertDetail" style="display:none; margin-top:40px;">
