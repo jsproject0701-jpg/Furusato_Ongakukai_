@@ -267,35 +267,6 @@ historyEl.innerHTML = concertHistory.map(c => `
 `).join('');
 
 
-
-// ============ HAMBURGER MENU ============
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-let menuOpen = false;
-
-hamburger.addEventListener('click', function () {
-  menuOpen = !menuOpen;
-  if (menuOpen) {
-    mobileMenu.classList.add('open');
-    // ハンバーガーをXに変形
-    const spans = hamburger.querySelectorAll('span');
-    spans[0].style.cssText = 'transform:rotate(45deg) translate(5px,5px)';
-    spans[1].style.cssText = 'opacity:0';
-    spans[2].style.cssText = 'transform:rotate(-45deg) translate(5px,-5px)';
-  } else {
-    closeMobileMenu();
-  }
-});
-
-function closeMobileMenu() {
-  menuOpen = false;
-  mobileMenu.classList.remove('open');
-  const spans = hamburger.querySelectorAll('span');
-  spans[0].style.cssText = '';
-  spans[1].style.cssText = '';
-  spans[2].style.cssText = '';
-}
-
 // ============ CMS ============
 const CMS_URL = "https://script.google.com/macros/s/AKfycbxLP3JZpcW7ON7ay5QO2tzoZmI1Vmi9CsqcUeBnf6rSonl6r2ZqP6gJQTglm5abJmnk/exec";
 
