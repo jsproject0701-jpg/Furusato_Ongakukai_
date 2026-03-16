@@ -31,7 +31,7 @@
     inset: 0;
     background:
       linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-      url('images/lp-photo.avif');
+      url('../images/lp-photo.avif');
     background-size: cover;
     background-position: center;
   }
@@ -504,10 +504,10 @@
   .activity-card:hover::before { transform: scale(1.1); }
   .activity-card > * { position: relative; z-index: 1; }
 
-  .activity-concert::before { background-image: url("images/about/teiki_button.avif"); }
-  .activity-street::before { background-image: url("images/about/machikado.jpg"); }
-  .activity-school::before { background-image: url("images/about/ongakukansho.png"); }
-  .activity-lesson::before { background-image: url("images/about/lesson.jpg"); }
+.activity-concert::before { background-image: url("../images/about/teiki_button.avif"); }
+.activity-street::before { background-image: url("../images/about/machikado.jpg"); }
+.activity-school::before { background-image: url("../images/about/ongakukansho.png"); }
+.activity-lesson::before { background-image: url("../images/about/lesson.jpg"); }
 
   .activity-name {
     font-family: 'Noto Serif JP', serif;
@@ -853,7 +853,7 @@
   /* ===================== PARALLAX ===================== */
   .parallax {
     height: 420px;
-    background-image: url("images/orchestra.jpg");
+    background-image: url("../images/orchestra.jpg");
     background-attachment: fixed; /* PCのみ */
     background-size: cover;
     background-position: center;
